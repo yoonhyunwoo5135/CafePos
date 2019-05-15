@@ -10,15 +10,17 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Color;
 
 public class AdminEdit {
-	private JTextField tId;
-	private JPasswordField pF;
-	private JPasswordField pFCheck;
-	private JTextField tName;
-	private JTextField tAge;
-	private JTextField tTel;
+	static JTextField tId;
+	static JPasswordField pF;
+	static JPasswordField pFCheck;
+	static JTextField tName;
+	static JTextField tAge;
+	static JTextField tTel;
+	
+	static AdminEditDto dto;
+	static AdminEditDao dao;
 	
 	public AdminEdit() {
 		JFrame f = new JFrame();
@@ -93,6 +95,36 @@ public class AdminEdit {
 		JButton buttonConfirm = new JButton("\uD655\uC778");
 		buttonConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(tId.equals("")) {
+					JOptionPane.showMessageDialog(null, "아이디를 입력해주세요!");
+					return;
+				}
+				else if(pF.equals("")) {
+					JOptionPane.showMessageDialog(null, "비밀번호를 입력해주세요!");
+					return;
+				}
+				if(pFCheck.equals("")) {
+					JOptionPane.showMessageDialog(null, "비밀번호를 확인해주세요!");
+					return;
+				}
+				if(tName.equals("")) {
+					JOptionPane.showMessageDialog(null, "이름을 입력해주세요!");
+					return;
+				}
+				if(tAge == null) {
+					JOptionPane.showMessageDialog(null, "나이를 입력해주세요!");
+					return;
+				}
+				if(tTel.equals("")) {
+					JOptionPane.showMessageDialog(null, "전화번호를 입력해주세요!");
+					return;
+				}
+				
+				dao = new AdminEditDao();
+				dto = dao.update();
+				JOptionPane.showMessageDialog(null, "회원 정보 변경 완료!");
+				
+				f.setVisible(false);
 			}//수정
 		});
 		buttonConfirm.setFont(new Font("굴림", Font.PLAIN, 14));
@@ -102,6 +134,7 @@ public class AdminEdit {
 		JButton buttonCancel = new JButton("\uCDE8\uC18C");
 		buttonCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				f.setVisible(false);
 			}//취소
 		});
 		buttonCancel.setFont(new Font("굴림", Font.PLAIN, 14));
