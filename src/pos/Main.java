@@ -373,7 +373,7 @@ public class Main {
 		buttonShowMember.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String tel = textFindMember.getText();
-				mdto = mdao.selectMember(tel);
+				mdto = mdao.selectMemberTel(tel);
 
 				textShowName.setText(mdto.getName());
 				textShowTel.setText(mdto.getTel());
@@ -821,7 +821,7 @@ public class Main {
 				// 멤버쉽 사용 DB 연동
 				String tel = textShowTel.getText();
 				if (tel != null || !(tel.trim().equals(""))) { // 메인에서 멤버쉽 조회를 한 경우만 실행
-					mdto = mdao.selectMember(tel);
+					mdto = mdao.selectMemberTel(tel);
 					int couponCnt = 0;
 					for (int i = 0; i < table.getRowCount(); i++) {
 						if ((boolean) table.getValueAt(i, 5) == true)

@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
 
 public class MemberDao {
 	Connection con;
@@ -15,7 +18,7 @@ public class MemberDao {
 	String password;
 	int res = 0;
 
-	public MemberDto selectMember(String tel) {
+	public MemberDto selectMemberTel(String tel) {
 		MemberDto dto = new MemberDto();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -50,8 +53,83 @@ public class MemberDao {
 		return dto;
 	}
 	
+	public ArrayList selectMemberName(String name) {
+		MemberDto dto;
+		ArrayList list = new ArrayList();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			String sql = "select * from membership where name = ? order by tel";
+			
+			ps = con.prepareStatement(sql);
+			ps.setString(1, name);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				dto = new MemberDto();
+				dto.setTel(rs.getString("tel"));
+				dto.setName(rs.getString("name"));
+				dto.setStamp(rs.getInt("stamp"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (ps != null)
+					ps.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
 	
-	public void insertMember(MemberDto dto) {
+	public ArrayList selectAll() {
+		MemberDto dto;
+		ArrayList list = new ArrayList();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			String sql = "select * from membership order by name";
+			
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				dto = new MemberDto();
+				dto.setTel(rs.getString("tel"));
+				dto.setName(rs.getString("name"));
+				dto.setStamp(rs.getInt("stamp"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (ps != null)
+					ps.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+	
+	
+	public int insertMember(String name, String tel) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			url = "jdbc:mysql://localhost:3306/cafe";
@@ -61,21 +139,23 @@ public class MemberDao {
 			String sql = "insert into membership(tel, name) values(?, ?)";
 
 			ps = con.prepareStatement(sql);
-			ps.setString(1, dto.getTel());
-			ps.setString(2, dto.getName());
+			ps.setString(1, tel);
+			ps.setString(2, name);
 			res = ps.executeUpdate();
 		} catch (Exception e) {
-			e.printStackTrace();
+			AlreadyMember am = new AlreadyMember();
+			res = 0;	// insert가 수행되지 않음을 표시
 		} finally {
 			try {
-				if (res != 0)
+				if (ps != null)
 					ps.close();
-				if (res != 0)
+				if (con != null)
 					con.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		return res;
 	}
 
 		public void plusStamp(String tel, int cnt) {
@@ -105,7 +185,7 @@ public class MemberDao {
 			}
 	}
 		
-		public void deleteMember(MemberDto dto) {
+		public int deleteMember(String tel) {
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				url = "jdbc:mysql://localhost:3306/cafe";
@@ -115,10 +195,11 @@ public class MemberDao {
 				String sql = "delete from membership where tel = ?";
 				
 				ps = con.prepareStatement(sql);
-				ps.setString(1, dto.getTel());
+				ps.setString(1, tel);
 				res = ps.executeUpdate();
 			} catch (Exception e) {
-				e.printStackTrace();
+				DeleteError de = new DeleteError();
+				res = 0;	// delete가 수행되지 않음을 표시
 			} finally {
 				try {
 					if (res != 0)
@@ -129,6 +210,7 @@ public class MemberDao {
 					e.printStackTrace();
 				}
 			}
+			return res;
 		}
 		
 		public void UseStamp(String tel, int couponCnt) {
@@ -159,4 +241,5 @@ public class MemberDao {
 		}
 		
 		
+
 }
