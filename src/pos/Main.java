@@ -5,6 +5,13 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
@@ -14,7 +21,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -25,42 +31,52 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import inven.Inven;
+import inven.InvenDao;
+import inven.InvenDto;
+import login.Login;
 import membership.MemberDao;
 import membership.MemberDto;
 import membership.Membership;
+import paybill.PaybillDAO;
+import paybill.PaybillDTO;
 import statistic.Statistic;
-
 
 public class Main {
 	static MemberDao mdao = new MemberDao();
 	static MemberDto mdto = new MemberDto();
+	static PaybillDTO pdto = new PaybillDTO(); // 결제 내역 관리
+	static PaybillDAO pdao = new PaybillDAO();
+	static InvenDao idao = new InvenDao(); // 재고 관리
+	static InvenDto idto = new InvenDto();
 	private static JTable table;
 	static DefaultTableModel tmodel;
 	static DefaultTableCellRenderer dcr;
 	static boolean finish = false;
 	static int tableRow = 0; // 행 수 세는 변수
-	static int finPrice = 1; // 최종 결제 금액
+	static int finPrice = 0; // 최종 결제 금액
+	static int selectText = 0;
 	private static JTextField textFindMember;
 	private static JTextField textShowName;
 	private static JTextField textShowTel;
 	private static JTextField textShowStamp;
 	private static JTextField textTakemoney;
-	static JRadioButton radioTel;
-	static JRadioButton radioTakeMoney;
-	
+	private static JLabel labelDate;
+	private static JLabel labelTime;
+
 	public Main() {
-		CoffeeInfo espre = new CoffeeInfo("에스프레소", 2500);
-		CoffeeInfo ameri = new CoffeeInfo("아메리카노", 3000);
-		CoffeeInfo latte = new CoffeeInfo("카페라떼", 3500);
-		CoffeeInfo viena = new CoffeeInfo("비엔나커피", 3500);
-		CoffeeInfo choco = new CoffeeInfo("초코프라푸치노", 4000);
+		CoffeeInfo espre = new CoffeeInfo("Espresso", 2500);
+		CoffeeInfo ameri = new CoffeeInfo("Americano", 3000);
+		CoffeeInfo latte = new CoffeeInfo("CaffeLatte", 3500);
+		CoffeeInfo viena = new CoffeeInfo("VienaCoffee", 3500);
+		CoffeeInfo choco = new CoffeeInfo("ChocoFrapuccino", 4000);
 
 		JFrame f1 = new JFrame("카페 포스 시스템");
+		f1.setTitle("카페POS프로그램 (Ver 1.01)");
 		f1.getContentPane().setFont(new Font("굴림", Font.PLAIN, 19));
 		f1.setSize(1080, 800);
 		f1.getContentPane().setLayout(null);
 
-		String[] col = { "번호", "메뉴", "단가", "가격", "수량", "쿠폰사용" }; // 열 목록
+		String[] col = { "번호", "메뉴", "단가", "수량", "가격", "쿠폰사용" }; // 열 목록
 
 		tmodel = new DefaultTableModel(col, 0);
 		dcr = new DefaultTableCellRenderer(); // 셀 다루는 객체 (체크박스 생성, 가운데 정렬)
@@ -92,7 +108,7 @@ public class Main {
 		la1.setIcon(icon);
 		la1.setBounds(27, 10, 300, 80);
 		f1.getContentPane().add(la1);
-		
+
 		JButton buttonMembership = new JButton("\uBA64\uBC84\uC27D");
 		buttonMembership.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -112,34 +128,37 @@ public class Main {
 		buttonInven.setFont(new Font("굴림", Font.BOLD, 18));
 		buttonInven.setBounds(435, 28, 95, 60);
 		f1.getContentPane().add(buttonInven);
-		
+
 		JButton buttonstatistic = new JButton("\uD1B5\uACC4");
 		buttonstatistic.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Statistic stat = new Statistic();
-			}//통계
+			}// 통계
 		});
 		buttonstatistic.setFont(new Font("굴림", Font.BOLD, 18));
 		buttonstatistic.setBounds(530, 28, 95, 60);
 		f1.getContentPane().add(buttonstatistic);
-		
+
 		JButton buttonEspre = new JButton("에스프레소");
 		buttonEspre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (espre.num == 0) {
+				idto.setBean(idto.getBean() + 2); // 원두 2소모
+				idto.setCup(idto.getCup() + 1); // 컵 1소모
+				idto.setStraw(idto.getStraw() + 1); // 빨대 1소모
+				if (espre.num == 0) { // 목록에 처음 올라갈 경우
 					espre.row = tableRow++;
 					Object[] obj = new Object[6];
 					obj[0] = tableRow;
 					obj[1] = espre.name;
 					obj[2] = espre.price;
-					obj[3] = espre.price;
-					obj[4] = ++espre.num;
+					obj[3] = ++espre.num;
+					obj[4] = espre.price;
 					obj[5] = false;
 					tmodel = (DefaultTableModel) table.getModel();
 					tmodel.addRow(obj); // 행추가
-				} else {
-					tmodel.setValueAt(++espre.num, espre.row, 4);
-					tmodel.setValueAt(espre.price * espre.num, espre.row, 3);
+				} else { // 같은 메뉴가 이미 목록에 올라와 있는 경우
+					tmodel.setValueAt(++espre.num, espre.row, 3);
+					tmodel.setValueAt(espre.price * espre.num, espre.row, 4);
 				}
 			}
 		});
@@ -150,20 +169,23 @@ public class Main {
 		JButton buttonAmeri = new JButton("아메리카노");
 		buttonAmeri.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (ameri.num == 0) {
+				idto.setBean(idto.getBean() + 2); // 원두 2소모
+				idto.setCup(idto.getCup() + 1); // 컵 1소모
+				idto.setStraw(idto.getStraw() + 1); // 빨대 1소모
+				if (ameri.num == 0) { // 목록에 처음 올라갈 경우
 					ameri.row = tableRow++;
 					Object[] obj = new Object[6];
 					obj[0] = tableRow;
 					obj[1] = ameri.name;
 					obj[2] = ameri.price;
-					obj[3] = ameri.price;
-					obj[4] = ++ameri.num;
+					obj[3] = ++ameri.num;
+					obj[4] = ameri.price;
 					obj[5] = false;
 					tmodel = (DefaultTableModel) table.getModel();
 					tmodel.addRow(obj); // 행추가
-				} else {
-					tmodel.setValueAt(++ameri.num, ameri.row, 4);
-					tmodel.setValueAt(ameri.price * ameri.num, ameri.row, 3);
+				} else {// 같은 메뉴가 이미 목록에 올라와 있는 경우
+					tmodel.setValueAt(++ameri.num, ameri.row, 3);
+					tmodel.setValueAt(ameri.price * ameri.num, ameri.row, 4);
 				}
 			}
 		});
@@ -174,20 +196,24 @@ public class Main {
 		JButton buttonLatte = new JButton("\uCE74\uD398\uB77C\uB5BC");
 		buttonLatte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (latte.num == 0) {
+				idto.setBean(idto.getBean() + 2); // 원두 2소모
+				idto.setMilk(idto.getMilk() + 2); // 우유 2소모
+				idto.setCup(idto.getCup() + 1); // 컵 1소모
+				idto.setStraw(idto.getStraw() + 1); // 빨대 1소모
+				if (latte.num == 0) { // 목록에 처음 올라갈 경우
 					latte.row = tableRow++;
 					Object[] obj = new Object[6];
 					obj[0] = tableRow;
 					obj[1] = latte.name;
 					obj[2] = latte.price;
-					obj[3] = latte.price;
-					obj[4] = ++latte.num;
+					obj[3] = ++latte.num;
+					obj[4] = latte.price;
 					obj[5] = false;
 					tmodel = (DefaultTableModel) table.getModel();
 					tmodel.addRow(obj); // 행추가
-				} else {
-					tmodel.setValueAt(++latte.num, latte.row, 4);
-					tmodel.setValueAt(latte.price * latte.num, latte.row, 3);
+				} else {// 같은 메뉴가 이미 목록에 올라와 있는 경우
+					tmodel.setValueAt(++latte.num, latte.row, 3);
+					tmodel.setValueAt(latte.price * latte.num, latte.row, 4);
 				}
 			}
 		});
@@ -198,20 +224,24 @@ public class Main {
 		JButton buttonViena = new JButton("\uBE44\uC5D4\uB098\uCEE4\uD53C");
 		buttonViena.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (viena.num == 0) {
+				idto.setBean(idto.getBean() + 2); // 원두 2소모
+				idto.setCream(idto.getCream() + 2); // 크림 2소모
+				idto.setCup(idto.getCup() + 1); // 컵 1소모
+				idto.setStraw(idto.getStraw() + 1); // 빨대 1소모
+				if (viena.num == 0) { // 목록에 처음 올라갈 경우
 					viena.row = tableRow++;
 					Object[] obj = new Object[6];
 					obj[0] = tableRow;
 					obj[1] = viena.name;
 					obj[2] = viena.price;
-					obj[3] = viena.price;
-					obj[4] = ++viena.num;
+					obj[3] = ++viena.num;
+					obj[4] = viena.price;
 					obj[5] = false;
 					tmodel = (DefaultTableModel) table.getModel();
 					tmodel.addRow(obj); // 행추가
-				} else {
-					tmodel.setValueAt(++viena.num, viena.row, 4);
-					tmodel.setValueAt(viena.price * viena.num, viena.row, 3);
+				} else {// 같은 메뉴가 이미 목록에 올라와 있는 경우
+					tmodel.setValueAt(++viena.num, viena.row, 3);
+					tmodel.setValueAt(viena.price * viena.num, viena.row, 4);
 				}
 			}
 		});
@@ -222,20 +252,26 @@ public class Main {
 		JButton buttonChoco = new JButton("\uCD08\uCF54\uD504\uB77C\uD478\uCE58\uB178");
 		buttonChoco.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (choco.num == 0) {
+				idto.setBean(idto.getBean() + 2); // 원두 2소모
+				idto.setMilk(idto.getMilk() + 1); // 우유 1소모
+				idto.setChoco(idto.getChoco() + 2); // 초코 2소모
+				idto.setCream(idto.getCream() + 1); // 크림 1소모
+				idto.setCup(idto.getCup() + 1); // 컵 1소모
+				idto.setStraw(idto.getStraw() + 1); // 빨대 1소모
+				if (choco.num == 0) { // 목록에 처음 올라갈 경우
 					choco.row = tableRow++;
 					Object[] obj = new Object[6];
 					obj[0] = tableRow;
 					obj[1] = choco.name;
 					obj[2] = choco.price;
-					obj[3] = choco.price;
-					obj[4] = ++choco.num;
+					obj[3] = ++choco.num;
+					obj[4] = choco.price;
 					obj[5] = false;
 					tmodel = (DefaultTableModel) table.getModel();
 					tmodel.addRow(obj); // 행추가
-				} else {
-					tmodel.setValueAt(++choco.num, choco.row, 4);
-					tmodel.setValueAt(choco.price * choco.num, choco.row, 3);
+				} else {// 같은 메뉴가 이미 목록에 올라와 있는 경우
+					tmodel.setValueAt(++choco.num, choco.row, 3);
+					tmodel.setValueAt(choco.price * choco.num, choco.row, 4);
 				}
 			}
 		});
@@ -244,32 +280,29 @@ public class Main {
 		f1.getContentPane().add(buttonChoco);
 
 		// 임시로 쿠폰사용여부 값 가져오는 버튼
-		JButton buttonImsi = new JButton();
-//		buttonImsi.setForeground(new Color(34, 139, 34));
-//		buttonImsi.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				System.out.println(table.getValueAt(0, 5));
-//			}
-//		});
-		buttonImsi.setFont(new Font("굴림", Font.BOLD, 14));
-		buttonImsi.setBounds(900, 158, 130, 60);
-		f1.getContentPane().add(buttonImsi);
+		JButton button_1 = new JButton();
 
-		JButton button_6 = new JButton("");
-		button_6.setFont(new Font("굴림", Font.BOLD, 26));
-		button_6.setBounds(771, 218, 130, 60);
-		f1.getContentPane().add(button_6);
+		button_1.setFont(new Font("굴림", Font.BOLD, 14));
+		button_1.setBounds(900, 158, 130, 60);
+		f1.getContentPane().add(button_1);
 
-		JButton buttonBack = new JButton("\uCC98\uC74C\uC73C\uB85C");
+		JButton button_2 = new JButton("");
+		button_2.setFont(new Font("굴림", Font.BOLD, 26));
+		button_2.setBounds(771, 218, 130, 60);
+		f1.getContentPane().add(button_2);
+
+		JButton buttonBack = new JButton("로그인 화면");
+		buttonBack.setForeground(new Color(255, 255, 255));
+		buttonBack.setBackground(new Color(0, 100, 0));
 		buttonBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Login log = new Login();
 				f1.setVisible(false);
-				
-			}//로그인 화면으로
+
+			}// 로그인 화면으로
 		});
 		buttonBack.setFont(new Font("굴림", Font.BOLD, 15));
-		buttonBack.setBounds(900, 218, 130, 60);
+		buttonBack.setBounds(642, 30, 130, 60);
 		f1.getContentPane().add(buttonBack);
 
 		// 메인메뉴 멤버쉽 패널
@@ -282,8 +315,14 @@ public class Main {
 		panel.setLayout(null);
 
 		textFindMember = new JTextField();
+		textFindMember.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				selectText = 0;
+			}
+		});
 		textFindMember.setFont(new Font("굴림", Font.PLAIN, 18));
-		textFindMember.setBounds(90, 15, 109, 27);
+		textFindMember.setBounds(90, 15, 109, 35);
 		panel.add(textFindMember);
 		textFindMember.setColumns(10);
 
@@ -304,6 +343,7 @@ public class Main {
 		panel_1.add(label_1);
 
 		textShowName = new JTextField();
+		textShowName.setHorizontalAlignment(SwingConstants.CENTER);
 		textShowName.setBackground(new Color(255, 255, 255));
 		textShowName.setEditable(false);
 		textShowName.setFont(new Font("굴림", Font.PLAIN, 16));
@@ -312,6 +352,7 @@ public class Main {
 		textShowName.setColumns(10);
 
 		textShowTel = new JTextField();
+		textShowTel.setHorizontalAlignment(SwingConstants.CENTER);
 		textShowTel.setBackground(new Color(255, 255, 255));
 		textShowTel.setEditable(false);
 		textShowTel.setFont(new Font("굴림", Font.PLAIN, 16));
@@ -320,9 +361,10 @@ public class Main {
 		panel_1.add(textShowTel);
 
 		textShowStamp = new JTextField();
+		textShowStamp.setHorizontalAlignment(SwingConstants.CENTER);
 		textShowStamp.setBackground(new Color(255, 255, 255));
 		textShowStamp.setEditable(false);
-		textShowStamp.setFont(new Font("굴림", Font.PLAIN, 16));
+		textShowStamp.setFont(new Font("굴림", Font.BOLD, 16));
 		textShowStamp.setColumns(10);
 		textShowStamp.setBounds(105, 142, 132, 35);
 		panel_1.add(textShowStamp);
@@ -369,7 +411,7 @@ public class Main {
 		panel_1.add(lblNewLabel_1);
 
 		JButton buttonShowMember = new JButton("검색");
-		buttonShowMember.setFont(new Font("굴림", Font.BOLD, 11));
+		buttonShowMember.setFont(new Font("굴림", Font.PLAIN, 13));
 		buttonShowMember.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String tel = textFindMember.getText();
@@ -379,6 +421,12 @@ public class Main {
 				textShowTel.setText(mdto.getTel());
 				textShowStamp.setText(String.valueOf(mdto.getStamp()));
 
+				if (mdto.getStamp() < 10) {
+					textShowStamp.setForeground(Color.red);
+				}else {
+					textShowStamp.setForeground(Color.black);
+				}
+				
 				if (mdto.getTel() == "" || mdto.getTel() == null) {
 					labelMemberAlert.setText("조회되지 않는 회원입니다.");
 				} else {
@@ -386,12 +434,12 @@ public class Main {
 				}
 			}
 		});
-		buttonShowMember.setBounds(211, 15, 60, 27);
+		buttonShowMember.setBounds(211, 15, 60, 35);
 		panel.add(buttonShowMember);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(255, 222, 173));
-		panel_2.setBounds(343, 385, 282, 339);
+		panel_2.setBounds(340, 385, 282, 339);
 		f1.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 
@@ -449,9 +497,15 @@ public class Main {
 		panel_2.add(labelShowTotalPrice);
 
 		textTakemoney = new JTextField();
+		textTakemoney.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				selectText = 1;
+			}
+		});
 		textTakemoney.setFont(new Font("굴림", Font.PLAIN, 13));
 		textTakemoney.setHorizontalAlignment(SwingConstants.CENTER);
-		textTakemoney.setBounds(114, 288, 92, 34);
+		textTakemoney.setBounds(114, 288, 92, 35);
 		panel_2.add(textTakemoney);
 		textTakemoney.setColumns(10);
 
@@ -468,13 +522,13 @@ public class Main {
 				// 총 수량 출력
 				int totalNum = 0;
 				for (int i = 0; i < table.getRowCount(); i++)
-					totalNum += (int) table.getValueAt(i, 4);
+					totalNum += (int) table.getValueAt(i, 3);
 				labelShowNum.setText(String.valueOf(totalNum) + " 잔");
 
 				// 총 금액 출력
 				int totalPrice = 0;
 				for (int i = 0; i < table.getRowCount(); i++)
-					totalPrice += (int) table.getValueAt(i, 3);
+					totalPrice += (int) table.getValueAt(i, 4);
 				labelShowTotalPrice.setText(String.valueOf(totalPrice) + " 원");
 
 				// 쿠폰 사용시 할인금액 적용 및 출력
@@ -491,7 +545,7 @@ public class Main {
 			}
 		});
 		buttonSelectFinish.setBackground(new Color(0, 102, 204));
-		buttonSelectFinish.setFont(new Font("굴림", Font.BOLD, 21));
+		buttonSelectFinish.setFont(new Font("굴림", Font.BOLD | Font.ITALIC, 21));
 		buttonSelectFinish.setBounds(642, 288, 125, 85);
 		f1.getContentPane().add(buttonSelectFinish);
 
@@ -526,8 +580,8 @@ public class Main {
 				labelShowChange.setText(String.valueOf(change) + " 원");
 			}
 		});
-		buttonShowChange.setFont(new Font("굴림", Font.BOLD, 11));
-		buttonShowChange.setBounds(212, 289, 58, 34);
+		buttonShowChange.setFont(new Font("굴림", Font.PLAIN, 12));
+		buttonShowChange.setBounds(212, 288, 58, 36);
 		panel_2.add(buttonShowChange);
 
 		JLabel label_7 = new JLabel("받을 금액");
@@ -552,21 +606,7 @@ public class Main {
 		f1.getContentPane().add(panel_8);
 		panel_8.setLayout(null);
 
-		radioTel = new JRadioButton("전화번호", true);
-		radioTel.setFont(new Font("굴림", Font.BOLD, 20));
-		radioTel.setBackground(new Color(255, 255, 204));
-		radioTel.setBounds(14, 15, 177, 29);
-		panel_8.add(radioTel);
-
-		radioTakeMoney = new JRadioButton("받은 금액");
-		radioTakeMoney.setFont(new Font("굴림", Font.BOLD, 20));
-		radioTakeMoney.setBackground(new Color(255, 204, 153));
-		radioTakeMoney.setBounds(14, 50, 177, 29);
-		panel_8.add(radioTakeMoney);
-
-		ButtonGroup bg = new ButtonGroup(); // radio를 한 그룹으로 묶어 둘 중 하나만 선택
-		bg.add(radioTel);
-		bg.add(radioTakeMoney);
+		ButtonGroup bg = new ButtonGroup();
 
 		/*
 		 * 화상키패드
@@ -574,7 +614,7 @@ public class Main {
 		JButton b0 = new JButton("0");
 		b0.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (radioTel.isSelected()) {
+				if (selectText == 0) {
 					textFindMember.setText(textFindMember.getText().concat("0"));
 				} else {
 					textTakemoney.setText(textTakemoney.getText().concat("0"));
@@ -589,7 +629,7 @@ public class Main {
 		JButton b1 = new JButton("1");
 		b1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (radioTel.isSelected()) {
+				if (selectText == 0) {
 					textFindMember.setText(textFindMember.getText().concat("1"));
 				} else {
 					textTakemoney.setText(textTakemoney.getText().concat("1"));
@@ -604,7 +644,7 @@ public class Main {
 		JButton b2 = new JButton("2");
 		b2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioTel.isSelected()) {
+				if (selectText == 0) {
 					textFindMember.setText(textFindMember.getText().concat("2"));
 				} else {
 					textTakemoney.setText(textTakemoney.getText().concat("2"));
@@ -619,7 +659,7 @@ public class Main {
 		JButton b3 = new JButton("3");
 		b3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioTel.isSelected()) {
+				if (selectText == 0) {
 					textFindMember.setText(textFindMember.getText().concat("3"));
 				} else {
 					textTakemoney.setText(textTakemoney.getText().concat("3"));
@@ -634,7 +674,7 @@ public class Main {
 		JButton b4 = new JButton("4");
 		b4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioTel.isSelected()) {
+				if (selectText == 0) {
 					textFindMember.setText(textFindMember.getText().concat("4"));
 				} else {
 					textTakemoney.setText(textTakemoney.getText().concat("4"));
@@ -649,7 +689,7 @@ public class Main {
 		JButton b5 = new JButton("5");
 		b5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioTel.isSelected()) {
+				if (selectText == 0) {
 					textFindMember.setText(textFindMember.getText().concat("5"));
 				} else {
 					textTakemoney.setText(textTakemoney.getText().concat("5"));
@@ -664,7 +704,7 @@ public class Main {
 		JButton b6 = new JButton("6");
 		b6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioTel.isSelected()) {
+				if (selectText == 0) {
 					textFindMember.setText(textFindMember.getText().concat("6"));
 				} else {
 					textTakemoney.setText(textTakemoney.getText().concat("6"));
@@ -679,7 +719,7 @@ public class Main {
 		JButton b7 = new JButton("7");
 		b7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioTel.isSelected()) {
+				if (selectText == 0) {
 					textFindMember.setText(textFindMember.getText().concat("7"));
 				} else {
 					textTakemoney.setText(textTakemoney.getText().concat("7"));
@@ -694,7 +734,7 @@ public class Main {
 		JButton b8 = new JButton("8");
 		b8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioTel.isSelected()) {
+				if (selectText == 0) {
 					textFindMember.setText(textFindMember.getText().concat("8"));
 				} else {
 					textTakemoney.setText(textTakemoney.getText().concat("8"));
@@ -709,7 +749,7 @@ public class Main {
 		JButton b9 = new JButton("9");
 		b9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioTel.isSelected()) {
+				if (selectText == 0) {
 					textFindMember.setText(textFindMember.getText().concat("9"));
 				} else {
 					textTakemoney.setText(textTakemoney.getText().concat("9"));
@@ -724,7 +764,7 @@ public class Main {
 		JButton b10 = new JButton("00");
 		b10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioTel.isSelected()) {
+				if (selectText == 0) {
 					textFindMember.setText(textFindMember.getText().concat("00"));
 				} else {
 					textTakemoney.setText(textTakemoney.getText().concat("00"));
@@ -740,7 +780,7 @@ public class Main {
 		b11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String str;
-				if (radioTel.isSelected()) {
+				if (selectText == 0) {
 					str = textFindMember.getText();
 					if (str.trim().equals("") || str == null) // str에 값이 없을때 그냥 메소드 종료
 						return;
@@ -759,10 +799,10 @@ public class Main {
 		b11.setBounds(167, 191, 72, 56);
 		panel_7.add(b11);
 
-		JButton buttonEnter = new JButton("Enter");
+		JButton buttonEnter = new JButton("검색 / 입력");
 		buttonEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioTel.isSelected()) {
+				if (selectText == 0) {
 					buttonShowMember.doClick();
 				} else {
 					buttonShowChange.doClick();
@@ -771,15 +811,31 @@ public class Main {
 		});
 		buttonEnter.setForeground(new Color(255, 255, 255));
 		buttonEnter.setBackground(new Color(105, 105, 105));
-		buttonEnter.setFont(new Font("굴림", Font.BOLD, 23));
-		buttonEnter.setBounds(14, 92, 116, 56);
+		buttonEnter.setFont(new Font("굴림", Font.BOLD, 14));
+		buttonEnter.setBounds(12, 25, 116, 56);
 		panel_8.add(buttonEnter);
+
+		JButton btnAc = new JButton("AC");
+		btnAc.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (selectText == 0) {
+					textFindMember.setText("");
+				} else {
+					textTakemoney.setText("");
+				}
+			}
+		});
+		btnAc.setForeground(Color.RED);
+		btnAc.setFont(new Font("굴림", Font.BOLD, 23));
+		btnAc.setBackground(new Color(153, 153, 153));
+		btnAc.setBounds(12, 91, 116, 56);
+		panel_8.add(btnAc);
 		// 멤버쉽 패널 끝
 
 		/*
 		 * 전체삭제 버튼
 		 */
-		JButton buttonAllDelete = new JButton("\uC804\uCCB4\uC0AD\uC81C");
+		JButton buttonAllDelete = new JButton("목록삭제");
 		buttonAllDelete.setForeground(new Color(220, 20, 60));
 		buttonAllDelete.setBackground(new Color(255, 255, 51));
 		buttonAllDelete.addActionListener(new ActionListener() {
@@ -800,7 +856,7 @@ public class Main {
 				labelFinPrice.setText("");
 			}
 		});
-		buttonAllDelete.setFont(new Font("굴림", Font.BOLD, 17));
+		buttonAllDelete.setFont(new Font("굴림", Font.BOLD, 19));
 		buttonAllDelete.setBounds(642, 223, 125, 55);
 		f1.getContentPane().add(buttonAllDelete);
 
@@ -818,6 +874,17 @@ public class Main {
 					NoFinPrice nof = new NoFinPrice();
 					return;
 				}
+
+				InvenDto idto2 = idao.list();
+				if (idto2.getBean() - idto.getBean() < 0 || idto2.getMilk() - idto.getMilk() < 0
+						|| idto2.getChoco() - idto.getBean() < 0 || idto2.getCream() - idto.getCream() < 0
+						|| idto2.getCup() - idto.getCup() < 0 || idto2.getStraw() - idto.getStraw() < 0) {
+					NotEnoughInven nei = new NotEnoughInven();
+					return;
+				}
+				idao.use(idto); // db에 있는 재고 소모시킴
+				idto = new InvenDto(0, 0, 0, 0, 0, 0); // 모두 0값으로 초기화
+
 				// 멤버쉽 사용 DB 연동
 				String tel = textShowTel.getText();
 				if (tel != null || !(tel.trim().equals(""))) { // 메인에서 멤버쉽 조회를 한 경우만 실행
@@ -840,19 +907,32 @@ public class Main {
 					} else { // 쿠폰 사용 안할 시 총 수량만큼 스탬프 적립
 						int cnt = 0;
 						for (int i = 0; i < table.getRowCount(); i++) {
-							cnt += (int) table.getValueAt(i, 4);
+							cnt += (int) table.getValueAt(i, 3);
 						}
 						mdao.plusStamp(mdto.getTel(), cnt);
 					}
 
 				} // 멤버쉽 조회한 경우 끝
 
-				SelectGender sg = new SelectGender();
-
-				// 메뉴창 초기화
+				// 메뉴창 초기화 + ArrayList에 paybill들 저장
+				int lastpin = pdao.selectLastPin();
+				ArrayList payList = new ArrayList();
 				for (int i = tableRow - 1; i >= 0; i--) {
+					pdto = new PaybillDTO();
+					pdto.setPin(lastpin + 1);
+					pdto.setMenu((String) table.getValueAt(i, 1));
+					pdto.setPrice((int) table.getValueAt(i, 2));
+					pdto.setQuantity((int) table.getValueAt(i, 3));
+					pdto.setTot_price((int) table.getValueAt(i, 4));
+					pdto.setCuppon(((boolean) table.getValueAt(i, 5) ? "o" : "x")); // true면 o 아니면 x 반환
+					payList.add(pdto);
 					tmodel.removeRow(i);
 				}
+				/*
+				 * 최종 paybill에 insert는 SelectGender에서 이루어진다. 바로위에서 'gender값을 제외하고 생성한 payList'를
+				 * SelectGender로 건네고 SelectGender에서 비어있는 gender값을 체운뒤 db에 insert
+				 */
+				SelectGender sg = new SelectGender(payList);
 
 				tableRow = 0;
 				espre.num = 0;
@@ -871,7 +951,7 @@ public class Main {
 				textShowStamp.setText("");
 				textShowTel.setText("");
 				labelMemberAlert.setText("* 손님에게 항상 친절하게 *");
-				radioTel.setSelected(true); // 가장 많이 쓰일 전화번호 입력 기본 세팅
+				selectText = 0; // 전화번호 자동 입력으로 기본 세팅
 			}
 		});
 		buttonCredit.setFont(new Font("굴림", Font.BOLD, 26));
@@ -880,12 +960,61 @@ public class Main {
 		buttonCredit.setBounds(190, 0, 196, 60);
 		panel_6.add(buttonCredit);
 
+		Timer timer = new Timer();
+		timer.schedule(new MakeTime(), 0, 1000);
+		// 호출 객체, 지연시간, 호출간격
+
+		labelDate = new JLabel("New label"); // 우측 상단 날짜 라벨
+		labelDate.setForeground(new Color(128, 128, 128));
+		labelDate.setFont(new Font("굴림", Font.BOLD, 15));
+		labelDate.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelDate.setBounds(756, 72, 273, 18);
+		f1.getContentPane().add(labelDate);
+
+		labelTime = new JLabel("New label");
+		labelTime.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelTime.setForeground(Color.GRAY);
+		labelTime.setFont(new Font("굴림", Font.BOLD, 15));
+		labelTime.setBounds(756, 51, 273, 18);
+		f1.getContentPane().add(labelTime);
+		
+		JButton button_3 = new JButton("");
+		button_3.setFont(new Font("굴림", Font.BOLD, 26));
+		button_3.setBounds(900, 218, 130, 60);
+		f1.getContentPane().add(button_3);
+
 		f1.setVisible(true);
 	}
 
-	
-	public static void main(String[] args) throws Exception{
+	class MakeTime extends TimerTask { // 실시간 시계를 정의하는 클래스
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			Calendar date = Calendar.getInstance();
+			SimpleDateFormat sdf1_1 = new SimpleDateFormat("yyyy년 M월 d일 E요일");
+			SimpleDateFormat sdf1_2 = new SimpleDateFormat("yyyy년 M월 dd일 E요일");
+			SimpleDateFormat sdf2_1 = new SimpleDateFormat("yyyy년 MM월 d일 E요일");
+			SimpleDateFormat sdf2_2 = new SimpleDateFormat("yyyy년 MM월 dd일 E요일");
+			SimpleDateFormat sdf3 = new SimpleDateFormat("HH시 mm분 ss초");
+			if (date.MONTH >= 10) {
+				if (date.MINUTE >= 10)
+					labelDate.setText(sdf2_2.format(date.getTime()));
+				else
+					labelDate.setText(sdf2_1.format(date.getTime()));
+			} else {
+				if (date.MINUTE >= 10)
+					labelDate.setText(sdf1_2.format(date.getTime()));
+				else
+					labelDate.setText(sdf1_1.format(date.getTime()));
+			}
+			labelTime.setText(sdf3.format(date.getTime()));
+		}
+
+	}
+
+	public static void main(String[] args) throws Exception {
 		Main main = new Main();
-		
-	}//main end
-}//class end
+
+	}// main end
+}// class end

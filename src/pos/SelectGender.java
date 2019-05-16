@@ -1,24 +1,35 @@
 package pos;
 
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import paybill.PaybillDAO;
+import paybill.PaybillDTO;
 
 public class SelectGender{
 	
-	public SelectGender() {
+	public SelectGender(ArrayList list) {
+		PaybillDAO pdao = new PaybillDAO(); 
 		JFrame f = new JFrame("결제 손님 성별정보 저장");
 		f.setSize(500, 300);
 		f.getContentPane().setLayout(null);
-		
+		f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // x로 안꺼짐
+	
 		JButton buttonMan = new JButton("남자");
 		buttonMan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.finish = true;
+				for(int i = 0 ; i < list.size(); i++) {
+					PaybillDTO pdto=(PaybillDTO)list.get(i);
+					pdto.setGender("male");
+					pdao.insertPaybill(pdto);
+				}
 				f.setVisible(false);
 			}
 		});
@@ -30,7 +41,12 @@ public class SelectGender{
 		JButton buttonWoman = new JButton("여자");
 		buttonWoman.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.finish = true;
+				for(int i = 0 ; i < list.size(); i++) {
+					PaybillDTO pdto=(PaybillDTO)list.get(i);
+					pdto.setGender("female");
+					pdao.insertPaybill(pdto);
+				}
+				
 				f.setVisible(false);
 			}
 		});
@@ -42,6 +58,5 @@ public class SelectGender{
 		f.setVisible(true);
 	}
 	public static void main(String[] args) {
-		SelectGender sg = new SelectGender();
 	}
 }

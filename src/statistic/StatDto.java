@@ -4,15 +4,107 @@ public class StatDto {
 	private int pin;
 	private String menu;
 	private int price;
-	private String cuppon;
-	private String jender;
-	private int date;
+	private int quantity;
+	private int tot_price;
+	private String coupon;
+	private String gender;
+	private String buydate;
 	private int count;
-	
+	private int americanoSum;
+	private int americanoTotal;
+	private int espressoSum;
+	private int espressoTotal;
+	private int cafelatteSum;
+	private int cafelatteTotal;
+	private int vienacoffeeSum;
+	private int vienacoffeeTotal;
+	private int chocofrapuccinoSum;
+	private int chocofrapuccinoTotal;
+
 	public StatDto() {
-		
+
 	}
-	
+
+	public int getAmericanoSum() {
+		return americanoSum;
+	}
+
+	public void setAmericanoSum(int americanoSum) {
+		this.americanoSum = americanoSum;
+	}
+
+	public int getAmericanoTotal() {
+		return americanoTotal;
+	}
+
+	public void setAmericanoTotal(int americanoTotal) {
+		this.americanoTotal = americanoTotal;
+	}
+
+	public int getEspressoSum() {
+		return espressoSum;
+	}
+
+	public void setEspressoSum(int espressoSum) {
+		this.espressoSum = espressoSum;
+	}
+
+	public int getEspressoTotal() {
+		return espressoTotal;
+	}
+
+	public void setEspressoTotal(int espressoTotal) {
+		this.espressoTotal = espressoTotal;
+	}
+
+	public int getCafelatteSum() {
+		return cafelatteSum;
+	}
+
+	public void setCafelatteSum(int cafelatteSum) {
+		this.cafelatteSum = cafelatteSum;
+	}
+
+	public int getCafelatteTotal() {
+		return cafelatteTotal;
+	}
+
+	public void setCafelatteTotal(int cafelatteTotal) {
+		this.cafelatteTotal = cafelatteTotal;
+	}
+
+	public int getVienacoffeeSum() {
+		return vienacoffeeSum;
+	}
+
+	public void setVienacoffeeSum(int vienacoffeeSum) {
+		this.vienacoffeeSum = vienacoffeeSum;
+	}
+
+	public int getVienacoffeeTotal() {
+		return vienacoffeeTotal;
+	}
+
+	public void setVienacoffeeTotal(int vienacoffeeTotal) {
+		this.vienacoffeeTotal = vienacoffeeTotal;
+	}
+
+	public int getChocofrapuccinoSum() {
+		return chocofrapuccinoSum;
+	}
+
+	public void setChocofrapuccinoSum(int chocofrapuccinoSum) {
+		this.chocofrapuccinoSum = chocofrapuccinoSum;
+	}
+
+	public int getChocofrapuccinoTotal() {
+		return chocofrapuccinoTotal;
+	}
+
+	public void setChocofrapuccinoTotal(int chocofrapuccinoTotal) {
+		this.chocofrapuccinoTotal = chocofrapuccinoTotal;
+	}
+
 	public int getPin() {
 		return pin;
 	}
@@ -37,28 +129,48 @@ public class StatDto {
 		this.price = price;
 	}
 
-	public String getCuppon() {
-		return cuppon;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setCuppon(String cuppon) {
-		this.cuppon = cuppon;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
-	public String getJender() {
-		return jender;
+	public int getTot_price() {
+		return tot_price;
 	}
 
-	public void setJender(String jender) {
-		this.jender = jender;
+	public void setTot_price(int tot_price) {
+		this.tot_price = tot_price;
 	}
 
-	public int getDate() {
-		return date;
+	public String getCoupon() {
+		return coupon;
 	}
 
-	public void setDate(int date) {
-		this.date = date;
+	public void setCoupon(String coupon) {
+		this.coupon = coupon;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getBuydate() {
+		return buydate;
+	}
+
+	public void setBuydate(String buydate) {
+		this.buydate = buydate;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
 	}
 
 	public int getCount() {
@@ -66,8 +178,7 @@ public class StatDto {
 	}
 
 	public void setCount(Object count) {
-		this.count = (int)count;
+		this.count = (int) count;
 	}
 
-	
 }

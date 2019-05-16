@@ -57,6 +57,7 @@ public class Inven {
 		
 		tmodel = new DefaultTableModel(header, 0);
 		table = new JTable(tmodel);
+		table.setFont(new Font("굴림", Font.PLAIN, 18));
 		tmodel.addRow(contents[0]);
 		table.setRowSelectionAllowed(false);
 		table.setEnabled(false);
@@ -70,6 +71,7 @@ public class Inven {
 		for (int i = 0; i < tcm.getColumnCount(); i++) {
 			tcm.getColumn(i).setCellRenderer(dcr); // table에서 컬럼을 불러온 뒤 셀의 속성을 설정
 		}
+		table.setRowHeight(30); // 행 높이 조절
 		
 		JButton addbean = new JButton("\uC6D0\uB450\uC8FC\uBB38");
 		addbean.addActionListener(new ActionListener() {
@@ -204,24 +206,29 @@ public class Inven {
 		
 		
 		t1 = new JTextField();
-		t1.setBounds(528, 341, 142, 42);
+		t1.setFont(new Font("굴림", Font.PLAIN, 22));
+		t1.setHorizontalAlignment(SwingConstants.CENTER);
+		t1.setBounds(528, 312, 142, 42);
 		f.getContentPane().add(t1);
 		t1.setColumns(10);
 		
 		JLabel la2 = new JLabel("\uC8FC\uBB38 \uC218\uB7C9");
+		la2.setHorizontalAlignment(SwingConstants.CENTER);
 		la2.setFont(new Font("굴림", Font.BOLD, 20));
-		la2.setBounds(547, 291, 97, 40);
+		la2.setBounds(524, 276, 146, 31);
 		f.getContentPane().add(la2);
 		f.getContentPane().setLayout(null);
 		
-		JButton back = new JButton("\uB3CC\uC544\uAC00\uAE30");
+		JButton back = new JButton("종료하기");
+		back.setForeground(new Color(255, 255, 255));
+		back.setBackground(new Color(255, 0, 51));
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				f.setVisible(false);
 			}//돌아가기
 		});
 		back.setFont(new Font("굴림", Font.BOLD, 14));
-		back.setBounds(547, 403, 105, 31);
+		back.setBounds(548, 366, 105, 31);
 		f.getContentPane().add(back);
 		
 		

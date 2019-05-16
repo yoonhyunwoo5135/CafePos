@@ -9,6 +9,18 @@ public class InvenDto {
 	private int cup;
 	private int straw;
 	
+	public InvenDto() { }
+	
+	public InvenDto(int bean, int milk, int choco, int cream, int cup, int straw) {
+		super();
+		this.bean = bean;
+		this.milk = milk;
+		this.choco = choco;
+		this.cream = cream;
+		this.cup = cup;
+		this.straw = straw;
+	}
+	
 	public int getBean() {
 		return bean;
 	}

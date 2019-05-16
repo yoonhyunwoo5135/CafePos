@@ -1,0 +1,4 @@
+create membership table(
+tel varchar(20) primary key,
+name varchar(20) not null,
+stamp int(4) default 0); 
