@@ -1,0 +1,23 @@
+paybill 테이블 생성
+
+create table paybill(
+    -> pin int(20) primary key Auto_increment,
+    -> menu varchar(50) not null,
+    -> price int(20) not null,
+    -> cuppon varchar(2) not null,
+    -> buydate timestamp default current_timestamp);
+    
+    일단 대체
+    create table paybill(
+    -> pin int(20) not null,
+    -> menu varchar(50) not null,
+    -> price int(20) not null,
+    -> quantity int (3) not null,
+    -> tot_price int(20) not null,
+    -> coupon varchar(2) not null,
+    -> gender varchar(10) not null,
+    -> buydate timestamp default current_timestamp);
+  
+  quantity 수량
+  tot_price 총 합계
+    
