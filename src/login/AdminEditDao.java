@@ -4,9 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
-import inven.Inven;
-import inven.InvenDto;
-
 public class AdminEditDao {
 	private String url;
 	private String user;

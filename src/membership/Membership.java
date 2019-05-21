@@ -1,23 +1,27 @@
 package membership;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
+
+import javax.swing.JToggleButton;
+import pos.Main;
 
 public class Membership extends JFrame {
 	static DefaultTableModel tmodel;
@@ -30,19 +34,20 @@ public class Membership extends JFrame {
 	private JTextField textFindmember;
 	private JTextField textInputName;
 	private JTextField textInputTel;
-	JLabel labelInsertAlert;
-	JLabel labelDeleteAlert;
+	JLabel labelInsertAlert; // 멤버쉽 생성 시 뜨는 메시지
+	JLabel labelDeleteAlert; // 멤버쉽 삭제 시 뜨는 메시지
 	private JTextField textdeleteTel;
+	JToggleButton toggleEvent; // 이벤트 실행 토글
 
 	public Membership() {
 		setTitle("멤버쉽 관리 창 (종료하기 버튼으로 종료)");
-		setSize(800, 600);
-		setBounds(200, 100, 800, 600);
-		getContentPane().setLayout(null);
+		setSize(985, 674);
+		setBounds(200, 100, 770, 545);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // x로 안꺼짐
-		
+		getContentPane().setLayout(null);
+
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(42, 95, 508, 442);
+		scrollPane.setBounds(12, 41, 508, 442);
 		getContentPane().add(scrollPane);
 
 		String[] col = { "번호", "이름", "전화번호", "스탬프 수" };
@@ -50,6 +55,7 @@ public class Membership extends JFrame {
 		dcr = new DefaultTableCellRenderer(); // 셀 다루는 객체 (체크박스 생성, 가운데 정렬)
 		dcr.setHorizontalAlignment(SwingConstants.CENTER); //
 		table = new JTable(tmodel);
+		table.setEnabled(false);
 		scrollPane.setViewportView(table);
 
 		TableColumnModel tcm = table.getColumnModel(); // 테이블 가운데 정렬
@@ -76,15 +82,16 @@ public class Membership extends JFrame {
 		}
 
 		JComboBox comboBox = new JComboBox(cbList);
-		comboBox.setBounds(42, 71, 80, 21);
+		comboBox.setBounds(12, 10, 80, 21);
 		getContentPane().add(comboBox);
 
 		textFindmember = new JTextField();
-		textFindmember.setBounds(123, 71, 132, 21);
+		textFindmember.setBounds(99, 11, 132, 21);
 		getContentPane().add(textFindmember);
 		textFindmember.setColumns(10);
 
 		JButton buttonSearch = new JButton("검색");
+		buttonSearch.setBounds(234, 11, 67, 22);
 		buttonSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				labelInsertAlert.setText("");
@@ -120,11 +127,11 @@ public class Membership extends JFrame {
 				}
 			}
 		});
-		buttonSearch.setBounds(264, 70, 67, 22);
 		getContentPane().add(buttonSearch);
 
 		// 종료버튼
 		JButton buttonExit = new JButton("종료하기");
+		buttonExit.setBounds(532, 406, 210, 77);
 		buttonExit.setForeground(new Color(255, 255, 240));
 		buttonExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -134,10 +141,10 @@ public class Membership extends JFrame {
 		});
 		buttonExit.setBackground(new Color(220, 20, 60));
 		buttonExit.setFont(new Font("굴림", Font.BOLD, 34));
-		buttonExit.setBounds(562, 460, 210, 77);
 		getContentPane().add(buttonExit);
 
 		JButton buttonShowAll = new JButton("전체목록");
+		buttonShowAll.setBounds(375, 10, 145, 23);
 		buttonShowAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				labelInsertAlert.setText("");
@@ -159,12 +166,11 @@ public class Membership extends JFrame {
 				}
 			}
 		});
-		buttonShowAll.setBounds(405, 70, 145, 23);
 		getContentPane().add(buttonShowAll);
 
 		JPanel panel = new JPanel();
+		panel.setBounds(532, 41, 210, 142);
 		panel.setBackground(new Color(255, 228, 181));
-		panel.setBounds(562, 95, 210, 158);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -178,30 +184,30 @@ public class Membership extends JFrame {
 		JLabel lblNewLabel = new JLabel("이 름");
 		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 14));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(0, 50, 82, 15);
+		lblNewLabel.setBounds(0, 38, 82, 15);
 		panel.add(lblNewLabel);
 
 		textInputName = new JTextField();
-		textInputName.setBounds(81, 47, 116, 21);
+		textInputName.setBounds(81, 34, 116, 21);
 		panel.add(textInputName);
 		textInputName.setColumns(10);
 
 		JLabel label_1 = new JLabel("전화번호");
 		label_1.setFont(new Font("굴림", Font.BOLD, 14));
 		label_1.setHorizontalAlignment(SwingConstants.CENTER);
-		label_1.setBounds(0, 85, 82, 15);
+		label_1.setBounds(0, 67, 82, 15);
 		panel.add(label_1);
 
 		textInputTel = new JTextField();
 		textInputTel.setColumns(10);
-		textInputTel.setBounds(81, 82, 116, 21);
+		textInputTel.setBounds(81, 64, 116, 21);
 		panel.add(textInputTel);
 
 		labelInsertAlert = new JLabel("");
+		labelInsertAlert.setBounds(532, 190, 210, 15);
 		labelInsertAlert.setBackground(new Color(220, 20, 60));
 		labelInsertAlert.setFont(new Font("굴림", Font.PLAIN, 14));
 		labelInsertAlert.setHorizontalAlignment(SwingConstants.CENTER);
-		labelInsertAlert.setBounds(562, 263, 210, 15);
 		getContentPane().add(labelInsertAlert);
 
 		JButton buttonInsertMem = new JButton("가입하기");
@@ -211,20 +217,20 @@ public class Membership extends JFrame {
 				labelDeleteAlert.setText("");
 				String name = textInputName.getText();
 				String tel = textInputTel.getText();
-				int res = mdao.insertMember(name, tel);	
-				if (res != 0) {	// 0일 경우 insert 수행 안된 것 
+				int res = mdao.insertMember(name, tel);
+				if (res != 0) { // 0일 경우 insert 수행 안된 것
 					labelInsertAlert.setText(name + "님 가입이 완료되었습니다.");
 					textInputName.setText("");
 					textInputTel.setText("");
 				}
 			}
 		});
-		buttonInsertMem.setBounds(53, 113, 109, 35);
+		buttonInsertMem.setBounds(53, 95, 109, 35);
 		panel.add(buttonInsertMem);
 
 		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(532, 234, 210, 114);
 		panel_1.setBackground(new Color(205, 92, 92));
-		panel_1.setBounds(562, 300, 210, 114);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
@@ -247,9 +253,9 @@ public class Membership extends JFrame {
 		panel_1.add(textdeleteTel);
 
 		labelDeleteAlert = new JLabel("");
+		labelDeleteAlert.setBounds(532, 358, 210, 15);
 		labelDeleteAlert.setHorizontalAlignment(SwingConstants.CENTER);
 		labelDeleteAlert.setFont(new Font("굴림", Font.PLAIN, 14));
-		labelDeleteAlert.setBounds(562, 424, 210, 15);
 		getContentPane().add(labelDeleteAlert);
 
 		JButton buttonDeleteMem = new JButton("삭제하기");
@@ -258,18 +264,82 @@ public class Membership extends JFrame {
 				labelInsertAlert.setText("");
 				labelDeleteAlert.setText("");
 				String tel = textdeleteTel.getText();
-				int res = mdao.deleteMember(tel);
-				if (res != 0) { // 0일 경우 delete 수행 안된 것 
-					labelDeleteAlert.setText("삭제가 완료되었습니다.");
+				int confirm = JOptionPane.showConfirmDialog(null, "정말 삭제하시겠습니까?");
+				if (confirm == 0) {
+					int res = mdao.deleteMember(tel);
+					if (res != 0) { // 0일 경우 delete 수행 안된 것
+						labelDeleteAlert.setText("삭제가 완료되었습니다.");
+						textdeleteTel.setText("");
+					}
+				} else {
 					textdeleteTel.setText("");
+					return;
 				}
 			}
 
 		});
 		buttonDeleteMem.setBounds(57, 69, 109, 35);
 		panel_1.add(buttonDeleteMem);
+		/*
+		 * 이벤트 토글
+		 */
+		if (Main.eventDoit == 0) {
+			JToggleButton toggleEvent = new JToggleButton("이벤트 모드 실행하기", false);
+			toggleEvent.setFont(new Font("굴림", Font.BOLD, 13));
+			toggleEvent.setForeground(new Color(0, 128, 0));
+			toggleEvent.setBackground(new Color(245, 255, 250));
+			toggleEvent.setBounds(551, 10, 180, 21);
+			getContentPane().add(toggleEvent);
+			toggleEvent.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (toggleEvent.isSelected()) {
+						toggleEvent.setText("이벤트 모드 해제하기");
+						toggleEvent.setForeground(Color.red);
+						mdao.resetEvent(); // 이벤트 모드 실행하면 회원들의 이벤트 참여 내역 초기화
+						Main.eventDoit = 1;
+						Main.labelShowEvent.setText("이벤트 모드 On");
+						Main.labelShowEvent.setForeground(new Color(0, 128, 0));
+					} else {
+						toggleEvent.setText("이벤트 모드 실행하기");
+						toggleEvent.setForeground(new Color(0, 128, 0));
+						toggleEvent.setBackground(new Color(245, 255, 250));
+						Main.eventDoit = 0;
+						Main.labelShowEvent.setText("");
+					}
+				}
+			});
+		} else {
+			JToggleButton toggleEvent = new JToggleButton("이벤트 모드 해제하기", true); // 토글 선택 된 상태
+			toggleEvent.setFont(new Font("굴림", Font.BOLD, 13));
+			toggleEvent.setForeground(Color.red);
+			toggleEvent.setBackground(new Color(245, 255, 250));
+			toggleEvent.setBounds(551, 10, 180, 21);
+			getContentPane().add(toggleEvent);
+			toggleEvent.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (toggleEvent.isSelected()) {
+						toggleEvent.setText("이벤트 모드 해제하기");
+						toggleEvent.setForeground(Color.red);
+						mdao.resetEvent(); // 이벤트 모드 실행하면 회원들의 이벤트 참여 내역 초기화
+						Main.eventDoit = 1;
+						Main.labelShowEvent.setText("이벤트 모드 On");
+						Main.labelShowEvent.setForeground(new Color(0, 128, 0));
+					} else {
+						toggleEvent.setText("이벤트 모드 실행하기");
+						toggleEvent.setForeground(new Color(0, 128, 0));
+						toggleEvent.setBackground(new Color(245, 255, 250));
+						Main.eventDoit = 0;
+						Main.labelShowEvent.setText("");
+					}
+				}
+			});
+		}
 
 		setVisible(true);
 
+	}
+
+	public static void main(String[] args) {
+		Membership m = new Membership();
 	}
 }

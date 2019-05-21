@@ -4,6 +4,7 @@ public class MemberDto {
 	private String tel;
 	private String name;
 	private int stamp;
+	private int event;
 	
 	public String getTel() {
 		return tel;
@@ -22,5 +23,11 @@ public class MemberDto {
 	}
 	public void setStamp(int stamp) {
 		this.stamp = stamp;
+	}
+	public int getEvent() {
+		return event;
+	}
+	public void setEvent(int event) {
+		this.event = event;
 	}
 }

@@ -1,5 +1,6 @@
 package statistic;
 
+import java.security.AllPermission;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -252,7 +253,7 @@ public class StatDao {
 		
 		return dto;		
 	}
-	public StatDto vienacoffee() {
+	public StatDto viennacoffee() {
 		ArrayList sum = new ArrayList();
 		dto = new StatDto();
 		try {
@@ -264,7 +265,7 @@ public class StatDao {
 			password = "1234";
 			con = DriverManager.getConnection(url, user, password);
 			//3.SQL문 설정(객체화)
-			String sql = "select * from paybill where menu = 'vienacoffee' and extract(month from buydate) = ?";
+			String sql = "select * from paybill where menu = 'viennacoffee' and extract(month from buydate) = ?";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, Statistic.month1);
 			//4.SQL문 전송
@@ -288,7 +289,7 @@ public class StatDao {
 				asum += dto.getTot_price();
 				
 			}
-			dto.setVienacoffeeSum(asum);
+			dto.setviennacoffeeSum(asum);
 			bsum = 0;
 			for (int i = 0; i < sum.size(); i++) {
 				dto = new StatDto();
@@ -296,14 +297,14 @@ public class StatDao {
 				bsum += dto.getQuantity();
 				
 			}
-			dto.setVienacoffeeTotal(bsum);
+			dto.setviennacoffeeTotal(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		return dto;		
 	}
-	public StatDto chocofrapuccino() {
+	public StatDto chocofrappuccino() {
 		ArrayList sum = new ArrayList();
 		dto = new StatDto();
 		try {
@@ -315,7 +316,7 @@ public class StatDao {
 			password = "1234";
 			con = DriverManager.getConnection(url, user, password);
 			//3.SQL문 설정(객체화)
-			String sql = "select * from paybill where menu = 'chocofrapuccino' and extract(month from buydate) = ?";
+			String sql = "select * from paybill where menu = 'chocofrappuccino' and extract(month from buydate) = ?";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, Statistic.month1);
 			//4.SQL문 전송
@@ -339,7 +340,7 @@ public class StatDao {
 				asum += dto.getTot_price();
 				
 			}
-			dto.setChocofrapuccinoSum(asum);
+			dto.setChocofrappuccinoSum(asum);
 			bsum = 0;
 			for (int i = 0; i < sum.size(); i++) {
 				dto = new StatDto();
@@ -347,7 +348,7 @@ public class StatDao {
 				bsum += dto.getQuantity();
 				
 			}
-			dto.setChocofrapuccinoTotal(bsum);
+			dto.setChocofrappuccinoTotal(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -479,7 +480,7 @@ public class StatDao {
 		
 		return dto;		
 	}
-	public StatDto vienacoffeesale() {
+	public StatDto viennacoffeesale() {
 		ArrayList sum = new ArrayList();
 		dto = new StatDto();
 		try {
@@ -491,7 +492,7 @@ public class StatDao {
 			password = "1234";
 			con = DriverManager.getConnection(url, user, password);
 			//3.SQL문 설정(객체화)
-			String sql = "select * from paybill where menu = 'vienacoffee' and extract(month from buydate) = ? and coupon = 'o'";
+			String sql = "select * from paybill where menu = 'viennacoffee' and extract(month from buydate) = ? and coupon = 'o'";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, Statistic.month1);
 			//4.SQL문 전송
@@ -510,17 +511,17 @@ public class StatDao {
 			}//while close
 			asum = sum.size() * 3500;
 			
-			dto.setVienacoffeesale(asum);
+			dto.setviennacoffeesale(asum);
 			
 			bsum = sum.size();
-			dto.setVienacoffeesalequan(bsum);
+			dto.setviennacoffeesalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		return dto;		
 	}
-	public StatDto chocofrapuccinosale() {
+	public StatDto chocofrappuccinosale() {
 		ArrayList sum = new ArrayList();
 		dto = new StatDto();
 		try {
@@ -532,7 +533,7 @@ public class StatDao {
 			password = "1234";
 			con = DriverManager.getConnection(url, user, password);
 			//3.SQL문 설정(객체화)
-			String sql = "select * from paybill where menu = 'chocofrapuccino' and extract(month from buydate) = ? and coupon = 'o'";
+			String sql = "select * from paybill where menu = 'chocofrappuccino' and extract(month from buydate) = ? and coupon = 'o'";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, Statistic.month1);
 			//4.SQL문 전송
@@ -552,10 +553,10 @@ public class StatDao {
 			
 			asum = sum.size() * 4000;
 			
-			dto.setChocofrapuccinosale(asum);
+			dto.setChocofrappuccinosale(asum);
 			
 			bsum = sum.size();
-			dto.setChocofrapuccinosalequan(bsum);
+			dto.setChocofrappuccinosalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -722,7 +723,7 @@ public class StatDao {
 		
 		return dto;		
 	}
-	public StatDto vienacoffeemale() {
+	public StatDto viennacoffeemale() {
 		ArrayList sum = new ArrayList();
 		dto = new StatDto();
 		try {
@@ -734,7 +735,7 @@ public class StatDao {
 			password = "1234";
 			con = DriverManager.getConnection(url, user, password);
 			//3.SQL문 설정(객체화)
-			String sql = "select * from paybill where menu = 'vienacoffee' and extract(month from buydate) = ? and gender = 'male'";
+			String sql = "select * from paybill where menu = 'viennacoffee' and extract(month from buydate) = ? and gender = 'male'";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, Statistic.month3);
 			//4.SQL문 전송
@@ -758,7 +759,7 @@ public class StatDao {
 				asum += dto.getTot_price();
 				
 			}
-			dto.setVienacoffeeMalesum(asum);
+			dto.setviennacoffeeMalesum(asum);
 			bsum = 0;
 			for (int i = 0; i < sum.size(); i++) {
 				dto = new StatDto();
@@ -766,7 +767,7 @@ public class StatDao {
 				bsum += dto.getQuantity();
 				
 			}
-			dto.setVienacoffeeMalequan(bsum);
+			dto.setviennacoffeeMalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -774,7 +775,7 @@ public class StatDao {
 		return dto;		
 	}
 	
-	public StatDto chocofrapuccinomale() {
+	public StatDto chocofrappuccinomale() {
 		ArrayList sum = new ArrayList();
 		dto = new StatDto();
 		try {
@@ -786,7 +787,7 @@ public class StatDao {
 			password = "1234";
 			con = DriverManager.getConnection(url, user, password);
 			//3.SQL문 설정(객체화)
-			String sql = "select * from paybill where menu = 'chocofrapuccino' and extract(month from buydate) = ? and gender = 'male'";
+			String sql = "select * from paybill where menu = 'chocofrappuccino' and extract(month from buydate) = ? and gender = 'male'";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, Statistic.month3);
 			//4.SQL문 전송
@@ -810,7 +811,7 @@ public class StatDao {
 				asum += dto.getTot_price();
 				
 			}
-			dto.setChocofrapuccinoMalesum(asum);
+			dto.setChocofrappuccinoMalesum(asum);
 			bsum = 0;
 			for (int i = 0; i < sum.size(); i++) {
 				dto = new StatDto();
@@ -818,7 +819,7 @@ public class StatDao {
 				bsum += dto.getQuantity();
 				
 			}
-			dto.setChocofrapuccinoMalequan(bsum);
+			dto.setChocofrappuccinoMalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -983,7 +984,7 @@ public class StatDao {
 		
 		return dto;		
 	}
-	public StatDto vienacoffeefemale() {
+	public StatDto viennacoffeefemale() {
 		ArrayList sum = new ArrayList();
 		dto = new StatDto();
 		try {
@@ -995,7 +996,7 @@ public class StatDao {
 			password = "1234";
 			con = DriverManager.getConnection(url, user, password);
 			//3.SQL문 설정(객체화)
-			String sql = "select * from paybill where menu = 'vienacoffee' and extract(month from buydate) = ? and gender = 'female'";
+			String sql = "select * from paybill where menu = 'viennacoffee' and extract(month from buydate) = ? and gender = 'female'";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, Statistic.month3);
 			//4.SQL문 전송
@@ -1019,7 +1020,7 @@ public class StatDao {
 				asum += dto.getTot_price();
 				
 			}
-			dto.setVienacoffeeFemalesum(asum);
+			dto.setviennacoffeeFemalesum(asum);
 			bsum = 0;
 			for (int i = 0; i < sum.size(); i++) {
 				dto = new StatDto();
@@ -1027,7 +1028,7 @@ public class StatDao {
 				bsum += dto.getQuantity();
 				
 			}
-			dto.setVienacoffeeFemalequan(bsum);
+			dto.setviennacoffeeFemalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1035,7 +1036,7 @@ public class StatDao {
 		return dto;		
 	}
 	
-	public StatDto chocofrapuccinofemale() {
+	public StatDto chocofrappuccinofemale() {
 		ArrayList sum = new ArrayList();
 		dto = new StatDto();
 		try {
@@ -1047,7 +1048,7 @@ public class StatDao {
 			password = "1234";
 			con = DriverManager.getConnection(url, user, password);
 			//3.SQL문 설정(객체화)
-			String sql = "select * from paybill where menu = 'chocofrapuccino' and extract(month from buydate) = ? and gender = 'female'";
+			String sql = "select * from paybill where menu = 'chocofrappuccino' and extract(month from buydate) = ? and gender = 'female'";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, Statistic.month3);
 			//4.SQL문 전송
@@ -1071,7 +1072,7 @@ public class StatDao {
 				asum += dto.getTot_price();
 				
 			}
-			dto.setChocofrapuccinoFemalesum(asum);
+			dto.setChocofrappuccinoFemalesum(asum);
 			bsum = 0;
 			for (int i = 0; i < sum.size(); i++) {
 				dto = new StatDto();
@@ -1079,7 +1080,7 @@ public class StatDao {
 				bsum += dto.getQuantity();
 				
 			}
-			dto.setChocofrapuccinoFemalequan(bsum);
+			dto.setChocofrappuccinoFemalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1087,9 +1088,9 @@ public class StatDao {
 		return dto;
 		
 	}
-	public StatDto selectPin(String pin) {
-		StatDto dto = new StatDto();
-		ArrayList pin1 = new ArrayList();
+	public ArrayList selectpin(String pin) {
+		ArrayList pin2 = new ArrayList();
+		dto = new StatDto();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			url = "jdbc:mysql://localhost:3306/cafe";
@@ -1099,35 +1100,191 @@ public class StatDao {
 			String sql = "select * from paybill where pin = ?";
 
 			ps = con.prepareStatement(sql);
-			ps.setString(1, pin);
+			ps.setString(1, Statistic.pin);
 			rs = ps.executeQuery();
-			if(rs.next()) {
-				dto.setPin(rs.getInt(1));
-				dto.setMenu(rs.getString(2));
-				dto.setPrice(rs.getInt(3));
-				dto.setQuantity(rs.getInt(4));
-				dto.setTot_price(rs.getInt(5));
-				dto.setCoupon(rs.getString(6));
-				dto.setGender(rs.getString(7));
-				dto.setBuydate(rs.getString(8));
+			while(rs.next()) {
+				dto = new StatDto();
+				int pin1 = rs.getInt(1);
+				String menu = rs.getString(2);
+				int price = rs.getInt(3);
+				int quantity = rs.getInt(4);
+				int tot_price = rs.getInt(5);
+				String coupon = rs.getString(6);
+				String gender = rs.getString(7);
+				String buydate = rs.getString(8);
+			
+				dto.setPin(pin1);
+				dto.setMenu(menu);
+				dto.setPrice(price);
+				dto.setQuantity(quantity);
+				dto.setTot_price(tot_price);
+				dto.setCoupon(coupon);
+				dto.setGender(gender);
+				dto.setBuydate(buydate);
 				
-				pin1.add(dto);
+				pin2.add(dto);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null)
-					rs.close();
-				if (ps != null)
-					ps.close();
-				if (con != null)
-					con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
-		return dto;
+		return pin2;
+	}
+	public StatDto pincount() {
+		dto = new StatDto();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		url = "jdbc:mysql://localhost:3306/cafe";
+		user = "root";
+		password = "1234";
+		con = DriverManager.getConnection(url, user, password);
+		String sql = "select count(*) from paybill where pin = ?";
+		ps = con.prepareStatement(sql);
+		ps.setString(1, Statistic.pin);
+		rs = ps.executeQuery();
+		
+		while(rs.next()) {
+			int count = rs.getInt(1);
+			dto.setPincount(count);
+		}
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	return dto;
+	}
+	public ArrayList selectmenu(String menu) {
+		ArrayList menu2 = new ArrayList();
+		dto = new StatDto();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			String sql = "select * from paybill where menu = ?";
+
+			ps = con.prepareStatement(sql);
+			ps.setString(1, Statistic.menu);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				dto = new StatDto();
+				int pin = rs.getInt(1);
+				String menu1 = rs.getString(2);
+				int price = rs.getInt(3);
+				int quantity = rs.getInt(4);
+				int tot_price = rs.getInt(5);
+				String coupon = rs.getString(6);
+				String gender = rs.getString(7);
+				String buydate = rs.getString(8);
+			
+				dto.setPin(pin);
+				dto.setMenu(menu1);
+				dto.setPrice(price);
+				dto.setQuantity(quantity);
+				dto.setTot_price(tot_price);
+				dto.setCoupon(coupon);
+				dto.setGender(gender);
+				dto.setBuydate(buydate);
+				
+				menu2.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return menu2;
+	}
+	public StatDto menucount() {
+		dto = new StatDto();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		url = "jdbc:mysql://localhost:3306/cafe";
+		user = "root";
+		password = "1234";
+		con = DriverManager.getConnection(url, user, password);
+		String sql = "select count(*) from paybill where menu = ?";
+		ps = con.prepareStatement(sql);
+		ps.setString(1, Statistic.menu);
+		rs = ps.executeQuery();
+		
+		while(rs.next()) {
+			int count = rs.getInt(1);
+			dto.setMenucount(count);
+		}
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	return dto;
+	}
+	public ArrayList selectcoupon(String coupon) {
+		ArrayList coupon2 = new ArrayList();
+		dto = new StatDto();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			String sql = "select * from paybill where coupon = ?";
+
+			ps = con.prepareStatement(sql);
+			ps.setString(1, Statistic.coupon);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				dto = new StatDto();
+				int pin = rs.getInt(1);
+				String menu = rs.getString(2);
+				int price = rs.getInt(3);
+				int quantity = rs.getInt(4);
+				int tot_price = rs.getInt(5);
+				String coupon1 = rs.getString(6);
+				String gender = rs.getString(7);
+				String buydate = rs.getString(8);
+			
+				dto.setPin(pin);
+				dto.setMenu(menu);
+				dto.setPrice(price);
+				dto.setQuantity(quantity);
+				dto.setTot_price(tot_price);
+				dto.setCoupon(coupon1);
+				dto.setGender(gender);
+				dto.setBuydate(buydate);
+				
+				coupon2.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return coupon2;
+	}
+	public StatDto couponcount() {
+		dto = new StatDto();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		url = "jdbc:mysql://localhost:3306/cafe";
+		user = "root";
+		password = "1234";
+		con = DriverManager.getConnection(url, user, password);
+		String sql = "select count(*) from paybill where coupon = ?";
+		ps = con.prepareStatement(sql);
+		ps.setString(1, Statistic.coupon);
+		rs = ps.executeQuery();
+		
+		while(rs.next()) {
+			int count = rs.getInt(1);
+			dto.setCouponcount(count);
+		}
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	return dto;
 	}
 	
 }

@@ -35,6 +35,7 @@ public class MemberDao {
 				dto.setTel(rs.getString("tel"));
 				dto.setName(rs.getString("name"));
 				dto.setStamp(rs.getInt("stamp"));
+				dto.setEvent(rs.getInt("event"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -157,6 +158,7 @@ public class MemberDao {
 		}
 		return res;
 	}
+	
 
 		public void plusStamp(String tel, int cnt) {
 			try {
@@ -240,6 +242,55 @@ public class MemberDao {
 			}
 		}
 		
+		public void joinEvent(String tel) {	// 이벤트에 참여하였을 경우 그 이후 하루동안 참여 못하게 막는 용도
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				url = "jdbc:mysql://localhost:3306/cafe";
+				user = "root";
+				password = "1234";
+				con = DriverManager.getConnection(url, user, password);
+				String sql = "update membership set event = 1 where tel = ?";
+				
+				ps = con.prepareStatement(sql);
+				ps.setString(1, tel);
+				res = ps.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (res != 0)
+						ps.close();
+					if (res != 0)
+						con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		
-
+		public void resetEvent() {	// 모든 회원이 이벤트에 참여할 수 있도록 초기화
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				url = "jdbc:mysql://localhost:3306/cafe";
+				user = "root";
+				password = "1234";
+				con = DriverManager.getConnection(url, user, password);
+				String sql = "update membership set event = 0";
+				
+				ps = con.prepareStatement(sql);
+				res = ps.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (res != 0)
+						ps.close();
+					if (res != 0)
+						con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 }
