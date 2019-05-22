@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class StatDao {
@@ -44,6 +45,18 @@ public class StatDao {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -61,7 +74,7 @@ public class StatDao {
 			password = "1234";
 			con = DriverManager.getConnection(url, user, password);
 			// 3.SQL문 설정(객체화)
-			String sql = "select * from paybill";
+			String sql = "select * from paybill order by pin desc";
 			ps = con.prepareStatement(sql);
 			// 4.SQL문 전송
 			rs = ps.executeQuery();
@@ -89,6 +102,18 @@ public class StatDao {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 		return list;
 	}
@@ -139,6 +164,18 @@ public class StatDao {
 			dto.setEspressoTotal(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -190,6 +227,18 @@ public class StatDao {
 			dto.setAmericanoTotal(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -241,6 +290,18 @@ public class StatDao {
 			dto.setCaffelatteTotal(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -292,6 +353,18 @@ public class StatDao {
 			dto.setviennacoffeeTotal(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -343,6 +416,18 @@ public class StatDao {
 			dto.setChocofrappuccinoTotal(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -384,6 +469,18 @@ public class StatDao {
 			dto.setEspressosalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -424,6 +521,18 @@ public class StatDao {
 			dto.setAmericanosalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -465,6 +574,18 @@ public class StatDao {
 			dto.setCaffelattesalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -506,6 +627,18 @@ public class StatDao {
 			dto.setviennacoffeesalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -548,6 +681,18 @@ public class StatDao {
 			dto.setChocofrappuccinosalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -600,6 +745,18 @@ public class StatDao {
 			dto.setEspressoMalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -651,6 +808,18 @@ public class StatDao {
 			dto.setAmericanoMalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -702,6 +871,18 @@ public class StatDao {
 			dto.setCaffelatteMalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -753,6 +934,18 @@ public class StatDao {
 			dto.setviennacoffeeMalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -804,6 +997,18 @@ public class StatDao {
 			dto.setChocofrappuccinoMalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -856,6 +1061,18 @@ public class StatDao {
 			dto.setEspressoFemalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -907,6 +1124,18 @@ public class StatDao {
 			dto.setAmericanoFemalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -958,6 +1187,18 @@ public class StatDao {
 			dto.setCaffelatteFemalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -1009,6 +1250,18 @@ public class StatDao {
 			dto.setviennacoffeeFemalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -1060,6 +1313,18 @@ public class StatDao {
 			dto.setChocofrappuccinoFemalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -1104,6 +1369,18 @@ public class StatDao {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 		return pin2;
 	}
@@ -1127,7 +1404,20 @@ public class StatDao {
 			}
 
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -1171,6 +1461,18 @@ public class StatDao {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 		return menu2;
 	}
@@ -1194,7 +1496,20 @@ public class StatDao {
 			}
 
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
@@ -1238,6 +1553,18 @@ public class StatDao {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 		return coupon2;
 	}
@@ -1261,7 +1588,20 @@ public class StatDao {
 			}
 
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
