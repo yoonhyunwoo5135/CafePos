@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.net.ssl.SSLEngineResult.Status;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -63,7 +62,6 @@ public class Statistic {
 
 	public Statistic() {
 
-
 		dto = dao.count();
 		list = dao.list();
 		dto1 = dao.espresso();
@@ -86,18 +84,16 @@ public class Statistic {
 		dto18 = dao.caffelattefemale();
 		dto19 = dao.viennacoffeefemale();
 		dto20 = dao.chocofrappuccinofemale();
-		
-		
+
 		JFrame f = new JFrame();
 		f.setSize(1080, 800);
 		f.setBounds(400, 200, 1080, 600);
 		f.setResizable(false);
 
-
 		String[] header = { "No", "결제번호", "메뉴명", "가격", "수량", "합계", "쿠폰여부", "성별", "날짜" };
 		Object[][] contents = new Object[dto.getCount()][9];
 		for (int i = 0; i < contents.length; i++) {
-			StatDto dto = (StatDto) list.get(i);			
+			StatDto dto = (StatDto) list.get(i);
 			contents[i][0] = ++paytableRow;
 			contents[i][1] = dto.getPin();
 			contents[i][2] = dto.getMenu();
@@ -112,7 +108,7 @@ public class Statistic {
 		for (int j = 0; j < contents.length; j++) {
 			tmodel.addRow(contents[j]);
 		}
-		
+
 		table = new JTable(tmodel);
 		DefaultTableCellRenderer dcr = new DefaultTableCellRenderer();
 		dcr.setHorizontalAlignment(SwingConstants.CENTER);
@@ -125,7 +121,7 @@ public class Statistic {
 		scrollPane.setBounds(24, 79, 706, 446);
 		f.getContentPane().add(scrollPane);
 		scrollPane.setViewportView(table);
-		
+
 		table.getColumnModel().getColumn(0).setPreferredWidth(10);
 		table.getColumnModel().getColumn(1).setPreferredWidth(60);
 		table.getColumnModel().getColumn(3).setPreferredWidth(50);
@@ -134,20 +130,18 @@ public class Statistic {
 		table.getColumnModel().getColumn(6).setPreferredWidth(50);
 		table.getColumnModel().getColumn(7).setPreferredWidth(30);
 		table.getColumnModel().getColumn(8).setPreferredWidth(100);// 행 길이
-		
 
 		String[] search = { "전체", "결제번호", "메뉴명", "쿠폰사용여부" };
-		
-		
+
 		JComboBox comboBoxSearch = new JComboBox(search);
 		comboBoxSearch.setBounds(24, 42, 94, 27);
 		f.getContentPane().add(comboBoxSearch);
-		
+
 		t1 = new JTextField();
 		t1.setBounds(130, 42, 196, 27);
 		f.getContentPane().add(t1);
 		t1.setColumns(10);
-		
+
 		JButton buttonSearch3 = new JButton("검색");
 		buttonSearch3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -157,7 +151,7 @@ public class Statistic {
 						tmodel.removeRow(--paytableRow);
 					}
 					for (int i = 0; i < dto.getCount(); i++) {
-						StatDto dto = (StatDto) list.get(i);						
+						StatDto dto = (StatDto) list.get(i);
 						contents[i][0] = ++paytableRow;
 						contents[i][1] = dto.getPin();
 						contents[i][2] = dto.getMenu();
@@ -168,92 +162,88 @@ public class Statistic {
 						contents[i][7] = dto.getGender();
 						contents[i][8] = dto.getBuydate();
 					}
-					tmodel = (DefaultTableModel) table.getModel();					
+					tmodel = (DefaultTableModel) table.getModel();
 					for (int j = 0; j < dto.getCount(); j++) {
 						tmodel.addRow(contents[j]);
 					}
-					
-				}
-				else if(selected == "결제번호") {
+
+				} else if (selected == "결제번호") {
 					pin = t1.getText();
 					for (int i = paytableRow - 1; i >= 0; i--) {
 						tmodel.removeRow(--paytableRow);
 					}
 					paytableRow = 0;
-					StatDto dto = dao.pincount();		
-					Object [] obj = new Object[9];
+					StatDto dto = dao.pincount();
+					Object[] obj = new Object[9];
 					pin1 = dao.selectpin(t1.getText());
-						for (int i = 0; i < dto.getPincount(); i++) {
-							StatDto pdto = (StatDto)pin1.get(i);							
-							obj[0] = ++paytableRow;
-							obj[1] = pdto.getPin();
-							obj[2] = pdto.getMenu();
-							obj[3] = pdto.getPrice();
-							obj[4] = pdto.getQuantity();
-							obj[5] = pdto.getTot_price();
-							obj[6] = pdto.getCoupon();
-							obj[7] = pdto.getGender();
-							obj[8] = pdto.getBuydate();
-							System.out.println(dto.getPincount());
-							tmodel.addRow(obj);
-						}			
+					for (int i = 0; i < dto.getPincount(); i++) {
+						StatDto pdto = (StatDto) pin1.get(i);
+						obj[0] = ++paytableRow;
+						obj[1] = pdto.getPin();
+						obj[2] = pdto.getMenu();
+						obj[3] = pdto.getPrice();
+						obj[4] = pdto.getQuantity();
+						obj[5] = pdto.getTot_price();
+						obj[6] = pdto.getCoupon();
+						obj[7] = pdto.getGender();
+						obj[8] = pdto.getBuydate();
+						System.out.println(dto.getPincount());
+						tmodel.addRow(obj);
+					}
 
-				}
-				else if(selected == "메뉴명") {
+				} else if (selected == "메뉴명") {
 					menu = t1.getText();
 					for (int i = paytableRow - 1; i >= 0; i--) {
 						tmodel.removeRow(--paytableRow);
 					}
 					paytableRow = 0;
-					StatDto dto = dao.menucount();		
-					Object [] obj = new Object[9];
+					StatDto dto = dao.menucount();
+					Object[] obj = new Object[9];
 					menu1 = dao.selectmenu(t1.getText());
-						for (int i = 0; i < dto.getMenucount(); i++) {
-							StatDto mdto = (StatDto)menu1.get(i);							
-							obj[0] = ++paytableRow;
-							obj[1] = mdto.getPin();
-							obj[2] = mdto.getMenu();
-							obj[3] = mdto.getPrice();
-							obj[4] = mdto.getQuantity();
-							obj[5] = mdto.getTot_price();
-							obj[6] = mdto.getCoupon();
-							obj[7] = mdto.getGender();
-							obj[8] = mdto.getBuydate();
-							System.out.println(dto.getMenucount());
-							tmodel.addRow(obj);
-						}			
+					for (int i = 0; i < dto.getMenucount(); i++) {
+						StatDto mdto = (StatDto) menu1.get(i);
+						obj[0] = ++paytableRow;
+						obj[1] = mdto.getPin();
+						obj[2] = mdto.getMenu();
+						obj[3] = mdto.getPrice();
+						obj[4] = mdto.getQuantity();
+						obj[5] = mdto.getTot_price();
+						obj[6] = mdto.getCoupon();
+						obj[7] = mdto.getGender();
+						obj[8] = mdto.getBuydate();
+						System.out.println(dto.getMenucount());
+						tmodel.addRow(obj);
+					}
 
-				}
-				else if(selected == "쿠폰사용여부") {
+				} else if (selected == "쿠폰사용여부") {
 					coupon = t1.getText();
 					for (int i = paytableRow - 1; i >= 0; i--) {
 						tmodel.removeRow(--paytableRow);
 					}
 					paytableRow = 0;
-					StatDto dto = dao.couponcount();		
-					Object [] obj = new Object[9];
+					StatDto dto = dao.couponcount();
+					Object[] obj = new Object[9];
 					coupon1 = dao.selectcoupon(t1.getText());
-						for (int i = 0; i < dto.getCouponcount(); i++) {
-							StatDto cdto = (StatDto)coupon1.get(i);							
-							obj[0] = ++paytableRow;
-							obj[1] = cdto.getPin();
-							obj[2] = cdto.getMenu();
-							obj[3] = cdto.getPrice();
-							obj[4] = cdto.getQuantity();
-							obj[5] = cdto.getTot_price();
-							obj[6] = cdto.getCoupon();
-							obj[7] = cdto.getGender();
-							obj[8] = cdto.getBuydate();
-							System.out.println(dto.getCouponcount());
-							tmodel.addRow(obj);
-						}			
+					for (int i = 0; i < dto.getCouponcount(); i++) {
+						StatDto cdto = (StatDto) coupon1.get(i);
+						obj[0] = ++paytableRow;
+						obj[1] = cdto.getPin();
+						obj[2] = cdto.getMenu();
+						obj[3] = cdto.getPrice();
+						obj[4] = cdto.getQuantity();
+						obj[5] = cdto.getTot_price();
+						obj[6] = cdto.getCoupon();
+						obj[7] = cdto.getGender();
+						obj[8] = cdto.getBuydate();
+						System.out.println(dto.getCouponcount());
+						tmodel.addRow(obj);
+					}
 
 				}
 			}// pin검색
 		});
 		buttonSearch3.setBounds(338, 42, 63, 27);
 		f.getContentPane().add(buttonSearch3);
-		
 
 		String[] header1 = { "메뉴명", "판매량", "총매출" };
 		Object[][] contents1 = { { "Espresso", dto1.getEspressoTotal(), dto1.getEspressoSum() },
@@ -402,8 +392,9 @@ public class Statistic {
 					contents2[3][1] = dto19.getviennacoffeeFemalequan() - dto9.getviennacoffeesalequan();
 					contents2[3][2] = dto19.getviennacoffeeFemalesum() - dto9.getviennacoffeesale();
 					contents2[4][1] = dto20.getChocofrappuccinoFemalequan() - dto10.getChocofrappuccinosalequan();
-					contents2[4][2] = dto20.getChocofrappuccinoFemalesum() - dto10.getChocofrappuccinosale();// 할인 적용 및 통계
-																											// 수량
+					contents2[4][2] = dto20.getChocofrappuccinoFemalesum() - dto10.getChocofrappuccinosale();// 할인 적용 및
+																												// 통계
+																												// 수량
 
 					tmodel2.addRow(contents2[0]);
 					tmodel2.addRow(contents2[1]);
