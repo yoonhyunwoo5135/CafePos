@@ -1,0 +1,7 @@
+create table inven(
+    -> bean int(10) not null,
+    -> milk int(10) not null,
+    -> choco int(10) not null,
+    -> cream int(10) not null,
+    -> cup int(10) not null,
+    -> straw int(10) not null);
