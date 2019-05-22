@@ -173,6 +173,11 @@ public class AdminEdit {
 				if(tId.getText().equals(dto.getId())) {
 					JOptionPane.showMessageDialog(null, "중복된 아이디 입니다.");
 				}
+				
+				else if(tId.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "아이디를 입력해주세요.");
+				}
+				
 				else {
 					JOptionPane.showMessageDialog(null, "사용가능한 아이디 입니다.");					
 				}
@@ -184,7 +189,10 @@ public class AdminEdit {
 		JButton buttonPwCheck = new JButton("PW\uD655\uC778");
 		buttonPwCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(pF.getText().equals(pFCheck.getText())) {
+				if(pF.getText().trim().equals("") || pFCheck.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "비밀번호를 입력해주세요.");
+				}
+				else if(pF.getText().equals(pFCheck.getText())) {
 					JOptionPane.showMessageDialog(null, "비밀번호가 일치합니다.");
 				}
 				else {
