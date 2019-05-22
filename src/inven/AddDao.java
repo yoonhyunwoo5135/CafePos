@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
+import javax.swing.JOptionPane;
+
 /*
  * 재고 채워넣는 Dao
  */
@@ -34,7 +36,7 @@ public class AddDao {
 			ps.executeUpdate();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "입력 값이 없습니다.");
 		}
 		return dto;
 
@@ -57,7 +59,7 @@ public class AddDao {
 			ps.executeUpdate();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "입력 값이 없습니다.");
 		}
 		return dto;
 	}//우유 추가 메소드
@@ -78,7 +80,7 @@ public class AddDao {
 
 			ps.executeUpdate();
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "입력 값이 없습니다.");
 		}
 		return dto;
 	}//초코 추가 메소드
@@ -99,7 +101,7 @@ public class AddDao {
 
 			ps.executeUpdate();
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "입력 값이 없습니다.");
 		}
 		return dto;
 	}//크림 추가 메소드
@@ -120,7 +122,7 @@ public class AddDao {
 
 			ps.executeUpdate();
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "입력 값이 없습니다.");
 		}
 		return dto;
 	}//컵 추가 메소드
@@ -141,7 +143,7 @@ public class AddDao {
 
 			ps.executeUpdate();
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "입력 값이 없습니다.");
 		}
 		return dto;
 	}//빨대 추가 메소드

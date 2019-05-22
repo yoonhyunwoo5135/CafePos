@@ -78,10 +78,11 @@ public class Inven {
 		JButton addbean = new JButton("\uC6D0\uB450\uC8FC\uBB38");
 		addbean.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				AddDao dao2 = new AddDao();
 				dto = dao2.Addbean();//dto값에 이미 dao.list가 들어가 있어서 dao2로 생성
-				
+				if(t1.getText().trim().equals("")) {
+					return;
+				}
 				int confirm = JOptionPane.showConfirmDialog(null, "주문하시겠습니까?");
 				if(confirm == 0) {
 					dto.getBean();
@@ -90,7 +91,6 @@ public class Inven {
 					contents[0][0] = dto.getBean();
 					tmodel.addRow(contents[0]);//새로운 행 추가
 					t1.setText("");	// 텍스트 필드 초기화
-					
 				};
 				
 				
@@ -105,7 +105,9 @@ public class Inven {
 			public void actionPerformed(ActionEvent e) {
 				AddDao dao2 = new AddDao();
 				dto = dao2.Addmilk();//dto값에 이미 dao.list가 들어가 있어서 dao2로 생성
-				
+				if(t1.getText().trim().equals("")) {
+					return;
+				}
 				int confirm = JOptionPane.showConfirmDialog(null, "주문하시겠습니까?");
 				if(confirm == 0) {
 					dto.getMilk();
@@ -126,7 +128,9 @@ public class Inven {
 			public void actionPerformed(ActionEvent e) {
 				AddDao dao2 = new AddDao();
 				dto = dao2.Addchoco();//dto값에 이미 dao.list가 들어가 있어서 dao2로 생성
-				
+				if(t1.getText().trim().equals("")) {
+					return;
+				}
 				int confirm = JOptionPane.showConfirmDialog(null, "주문하시겠습니까?");
 				if(confirm == 0) {
 					dto.getChoco();
@@ -148,7 +152,9 @@ public class Inven {
 			public void actionPerformed(ActionEvent e) {
 				AddDao dao2 = new AddDao();
 				dto = dao2.Addcream();//dto값에 이미 dao.list가 들어가 있어서 dao2로 생성
-				
+				if(t1.getText().trim().equals("")) {
+					return;
+				}
 				int confirm = JOptionPane.showConfirmDialog(null, "주문하시겠습니까?");
 				if(confirm == 0) {
 					dto.getCream();
@@ -169,7 +175,9 @@ public class Inven {
 			public void actionPerformed(ActionEvent e) {
 				AddDao dao2 = new AddDao();
 				dto = dao2.Addcup();//dto값에 이미 dao.list가 들어가 있어서 dao2로 생성
-				
+				if(t1.getText().trim().equals("")) {
+					return;
+				}
 				int confirm = JOptionPane.showConfirmDialog(null, "주문하시겠습니까?");
 				if(confirm == 0) {
 					dto.getCup();
@@ -190,7 +198,9 @@ public class Inven {
 			public void actionPerformed(ActionEvent e) {
 				AddDao dao2 = new AddDao();
 				dto = dao2.Addstraw();//dto값에 이미 dao.list가 들어가 있어서 dao2로 생성
-				
+				if(t1.getText().trim().equals("")) {
+					return;
+				}
 				int confirm = JOptionPane.showConfirmDialog(null, "주문하시겠습니까?");
 				if(confirm == 0) {
 					dto.getStraw();
