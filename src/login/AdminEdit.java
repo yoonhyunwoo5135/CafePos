@@ -102,7 +102,7 @@ public class AdminEdit {
 					JOptionPane.showMessageDialog(null, "중복된 아이디입니다.");
 					return;
 				}
-				else if(pF.getText().equals(dto2.getPw())) {
+				else if(pF.getText().equals(dto2.getPw()) && pFCheck.getText().equals(dto2.getPw()) ) {
 					int confirm = JOptionPane.showConfirmDialog(null, "비밀번호가 기존과 같습니다. 그대로 진행하시겠습니까?");
 					if(confirm == 0) {
 						dao = new AdminEditDao();
@@ -137,6 +137,10 @@ public class AdminEdit {
 				}
 				else if(tTel.equals("")) {
 					JOptionPane.showMessageDialog(null, "전화번호를 입력해주세요!");
+					return;
+				}
+				else if(!pF.getText().equals(pFCheck.getText())) {
+					JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.");
 					return;
 				}
 				
