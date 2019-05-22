@@ -95,7 +95,27 @@ public class AdminEdit {
 		JButton buttonConfirm = new JButton("\uD655\uC778");
 		buttonConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(tId.equals("")) {
+				LoginDao dao2 = new LoginDao();
+				LoginDto dto2 = dao2.info();
+				
+				if(tId.getText().equals(dto2.getId())) {
+					JOptionPane.showMessageDialog(null, "중복된 아이디입니다.");
+					return;
+				}
+				else if(pF.getText().equals(dto2.getPw())) {
+					int confirm = JOptionPane.showConfirmDialog(null, "비밀번호가 기존과 같습니다. 그대로 진행하시겠습니까?");
+					if(confirm == 0) {
+						dao = new AdminEditDao();
+						dto = dao.update();
+						JOptionPane.showMessageDialog(null, "회원 정보 변경 완료!");
+						f.setVisible(false);
+						return;
+					}
+					else if(confirm == 1) {
+						return;
+					}
+				}
+				else if(tId.equals("")) {
 					JOptionPane.showMessageDialog(null, "아이디를 입력해주세요!");
 					return;
 				}
@@ -103,19 +123,19 @@ public class AdminEdit {
 					JOptionPane.showMessageDialog(null, "비밀번호를 입력해주세요!");
 					return;
 				}
-				if(pFCheck.equals("")) {
+				else if(pFCheck.equals("")) {
 					JOptionPane.showMessageDialog(null, "비밀번호를 확인해주세요!");
 					return;
 				}
-				if(tName.equals("")) {
+				else if(tName.equals("")) {
 					JOptionPane.showMessageDialog(null, "이름을 입력해주세요!");
 					return;
 				}
-				if(tAge == null) {
+				else if(tAge == null) {
 					JOptionPane.showMessageDialog(null, "나이를 입력해주세요!");
 					return;
 				}
-				if(tTel.equals("")) {
+				else if(tTel.equals("")) {
 					JOptionPane.showMessageDialog(null, "전화번호를 입력해주세요!");
 					return;
 				}
@@ -123,9 +143,8 @@ public class AdminEdit {
 				dao = new AdminEditDao();
 				dto = dao.update();
 				JOptionPane.showMessageDialog(null, "회원 정보 변경 완료!");
-				
 				f.setVisible(false);
-			}//수정
+			}//수정 확인
 		});
 		buttonConfirm.setFont(new Font("굴림", Font.PLAIN, 14));
 		buttonConfirm.setBounds(92, 390, 96, 32);

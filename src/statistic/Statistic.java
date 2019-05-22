@@ -91,6 +91,7 @@ public class Statistic {
 		JFrame f = new JFrame();
 		f.setSize(1080, 800);
 		f.setBounds(400, 200, 1080, 600);
+		f.setResizable(false);
 
 
 		String[] header = { "No", "결제번호", "메뉴명", "가격", "수량", "합계", "쿠폰여부", "성별", "날짜" };

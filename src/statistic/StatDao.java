@@ -99,21 +99,17 @@ public class StatDao {
 		try {
 			//1.드라이버 설정
 			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("1. 드라이버 설정 ok...");
 			//2.DB연결
 			url = "jdbc:mysql://localhost:3306/cafe";
 			user = "root";
 			password = "1234";
 			con = DriverManager.getConnection(url, user, password);
-			System.out.println("2. DB연결 OK...");
 			//3.SQL문 설정(객체화)
 			String sql = "select * from paybill where menu = 'espresso' and extract(month from buydate) = ?";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, Statistic.month1);
-			System.out.println("3. SQL문 객체화 OK...");
 			//4.SQL문 전송
 			rs = ps.executeQuery();
-			System.out.println("4. SQL문 전송 OK...");
 			//SQL문의 결과가 있으면, 받아서 처리
 			while(rs.next()) {
 				dto = new StatDto();
@@ -143,7 +139,6 @@ public class StatDao {
 			}
 			dto.setEspressoTotal(bsum);
 		} catch (Exception e) {
-			System.out.println("DB처리 중 에러발생...");
 			e.printStackTrace();
 		}
 		

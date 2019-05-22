@@ -42,7 +42,8 @@ public class Membership extends JFrame {
 	public Membership() {
 		setTitle("멤버쉽 관리 창 (종료하기 버튼으로 종료)");
 		setSize(985, 674);
-		setBounds(200, 100, 770, 545);
+		setResizable(false);
+		setBounds(600, 200, 770, 545);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // x로 안꺼짐
 		getContentPane().setLayout(null);
 

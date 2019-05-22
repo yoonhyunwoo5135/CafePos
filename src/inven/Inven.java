@@ -30,6 +30,8 @@ public class Inven {
 	public Inven() {
 		JFrame f = new JFrame("카페 포스 시스템");
 		f.setTitle("재고 관리 창");
+		f.setBounds(600, 200, 700, 500);
+		f.setResizable(false);
 		f.setSize(700 , 500);
 		f.setResizable(false);
 		
@@ -49,13 +51,13 @@ public class Inven {
 		contents[0][2] = dto.getChoco();
 		contents[0][3] = dto.getCream();
 		contents[0][4] = dto.getCup();
-		contents[0][5] = dto.getStraw();
+		contents[0][5] = dto.getStraw();//초기 테이블 Row 생성
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(25, 98, 645, 143);
 		f.getContentPane().add(scrollPane);
 		
-		tmodel = new DefaultTableModel(header, 0);
+		tmodel = new DefaultTableModel(header, 0);//Row 타이틀
 		table = new JTable(tmodel);
 		table.setFont(new Font("굴림", Font.PLAIN, 18));
 		tmodel.addRow(contents[0]);
@@ -78,21 +80,21 @@ public class Inven {
 			public void actionPerformed(ActionEvent e) {
 				
 				AddDao dao2 = new AddDao();
-				dto = dao2.Addbean();
+				dto = dao2.Addbean();//dto값에 이미 dao.list가 들어가 있어서 dao2로 생성
 				
 				int confirm = JOptionPane.showConfirmDialog(null, "주문하시겠습니까?");
 				if(confirm == 0) {
 					dto.getBean();
-					tmodel.removeRow(0);
+					tmodel.removeRow(0);//기존 행 삭제
 					dto = dao.list();
 					contents[0][0] = dto.getBean();
-					tmodel.addRow(contents[0]);
+					tmodel.addRow(contents[0]);//새로운 행 추가
 					t1.setText("");	// 텍스트 필드 초기화
 					
 				};
 				
 				
-			}//bean
+			}//bean 추가 버튼
 		});
 		addbean.setFont(new Font("굴림", Font.BOLD, 20));
 		addbean.setBounds(25, 276, 142, 47);
@@ -102,18 +104,18 @@ public class Inven {
 		addmilk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddDao dao2 = new AddDao();
-				dto = dao2.Addmilk();
+				dto = dao2.Addmilk();//dto값에 이미 dao.list가 들어가 있어서 dao2로 생성
 				
 				int confirm = JOptionPane.showConfirmDialog(null, "주문하시겠습니까?");
 				if(confirm == 0) {
 					dto.getMilk();
-					tmodel.removeRow(0);
+					tmodel.removeRow(0);//기존 행 삭제
 					dto = dao.list();
 					contents[0][1] = dto.getMilk();
-					tmodel.addRow(contents[0]);
-					t1.setText("");
+					tmodel.addRow(contents[0]);//새로운 행 추가
+					t1.setText("");//텍스트 필드 초기화
 				};
-			}//milk
+			}//milk추가 버튼
 		});
 		addmilk.setFont(new Font("굴림", Font.BOLD, 20));
 		addmilk.setBounds(195, 276, 142, 47);
@@ -123,19 +125,19 @@ public class Inven {
 		addchoco.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddDao dao2 = new AddDao();
-				dto = dao2.Addchoco();
+				dto = dao2.Addchoco();//dto값에 이미 dao.list가 들어가 있어서 dao2로 생성
 				
 				int confirm = JOptionPane.showConfirmDialog(null, "주문하시겠습니까?");
 				if(confirm == 0) {
 					dto.getChoco();
-					tmodel.removeRow(0);
+					tmodel.removeRow(0);//기존 행 삭제
 					dto = dao.list();
 					contents[0][2] = dto.getChoco();
-					tmodel.addRow(contents[0]);
-					t1.setText("");
+					tmodel.addRow(contents[0]);//새로운 행 추가
+					t1.setText("");//텍스트 필드 초기화
 				};
 				
-			}//choco
+			}//choco추가 버튼
 		});
 		addchoco.setFont(new Font("굴림", Font.BOLD, 20));
 		addchoco.setBounds(365, 276, 142, 47);
@@ -145,18 +147,18 @@ public class Inven {
 		addcream.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddDao dao2 = new AddDao();
-				dto = dao2.Addcream();
+				dto = dao2.Addcream();//dto값에 이미 dao.list가 들어가 있어서 dao2로 생성
 				
 				int confirm = JOptionPane.showConfirmDialog(null, "주문하시겠습니까?");
 				if(confirm == 0) {
 					dto.getCream();
-					tmodel.removeRow(0);
+					tmodel.removeRow(0);//기존 행 삭제
 					dto = dao.list();
 					contents[0][3] = dto.getCream();
-					tmodel.addRow(contents[0]);
-					t1.setText("");
+					tmodel.addRow(contents[0]);//새로운 행 추가
+					t1.setText("");//텍스트 필드 초기화
 				};
-			}//cream
+			}//cream추가 버튼
 		});
 		addcream.setFont(new Font("굴림", Font.BOLD, 20));
 		addcream.setBounds(25, 350, 142, 47);
@@ -166,18 +168,18 @@ public class Inven {
 		addcup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddDao dao2 = new AddDao();
-				dto = dao2.Addcup();
+				dto = dao2.Addcup();//dto값에 이미 dao.list가 들어가 있어서 dao2로 생성
 				
 				int confirm = JOptionPane.showConfirmDialog(null, "주문하시겠습니까?");
 				if(confirm == 0) {
 					dto.getCup();
-					tmodel.removeRow(0);
+					tmodel.removeRow(0);//기존행 삭제
 					dto = dao.list();
 					contents[0][4] = dto.getCup();
-					tmodel.addRow(contents[0]);
-					t1.setText("");
+					tmodel.addRow(contents[0]);//새로운 행 추가
+					t1.setText("");//텍스트 필드 초기화
 				};
-			}//cup
+			}//cup추가 버튼
 		});
 		addcup.setFont(new Font("굴림", Font.BOLD, 20));
 		addcup.setBounds(195, 350, 142, 47);
@@ -187,18 +189,18 @@ public class Inven {
 		addstraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddDao dao2 = new AddDao();
-				dto = dao2.Addstraw();
+				dto = dao2.Addstraw();//dto값에 이미 dao.list가 들어가 있어서 dao2로 생성
 				
 				int confirm = JOptionPane.showConfirmDialog(null, "주문하시겠습니까?");
 				if(confirm == 0) {
 					dto.getStraw();
-					tmodel.removeRow(0);
+					tmodel.removeRow(0);//기존행 삭제
 					dto = dao.list();
 					contents[0][5] = dto.getStraw();
-					tmodel.addRow(contents[0]);
-					t1.setText("");
+					tmodel.addRow(contents[0]);//새로운 행 추가
+					t1.setText("");//텍스트 필드 초기화
 				};
-			}//straw
+			}//straw추가 버튼
 		});
 		addstraw.setFont(new Font("굴림", Font.BOLD, 20));
 		addstraw.setBounds(365, 350, 142, 47);
@@ -210,14 +212,14 @@ public class Inven {
 		t1.setHorizontalAlignment(SwingConstants.CENTER);
 		t1.setBounds(528, 312, 142, 42);
 		f.getContentPane().add(t1);
-		t1.setColumns(10);
+		t1.setColumns(10);//추가할 수량 적는 텍스트 필드
 		
 		JLabel la2 = new JLabel("\uC8FC\uBB38 \uC218\uB7C9");
 		la2.setHorizontalAlignment(SwingConstants.CENTER);
 		la2.setFont(new Font("굴림", Font.BOLD, 20));
 		la2.setBounds(524, 276, 146, 31);
 		f.getContentPane().add(la2);
-		f.getContentPane().setLayout(null);
+		f.getContentPane().setLayout(null);//주문수량 라벨
 		
 		JButton back = new JButton("종료하기");
 		back.setForeground(new Color(255, 255, 255));

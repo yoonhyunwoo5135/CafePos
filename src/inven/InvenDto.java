@@ -12,7 +12,6 @@ public class InvenDto {
 	public InvenDto() { }
 	
 	public InvenDto(int bean, int milk, int choco, int cream, int cup, int straw) {
-		super();
 		this.bean = bean;
 		this.milk = milk;
 		this.choco = choco;

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 /*
- * 재고 체워넣는 Dao
+ * 재고 채워넣는 Dao
  */
 
 public class AddDao {
@@ -38,7 +38,7 @@ public class AddDao {
 		}
 		return dto;
 
-	}
+	}//원두 추가 메소드
 
 	public InvenDto Addmilk() {
 		dto = new InvenDto();
@@ -60,7 +60,7 @@ public class AddDao {
 			e.printStackTrace();
 		}
 		return dto;
-	}
+	}//우유 추가 메소드
 
 	public InvenDto Addchoco() {
 		dto = new InvenDto();
@@ -81,7 +81,7 @@ public class AddDao {
 			e.printStackTrace();
 		}
 		return dto;
-	}
+	}//초코 추가 메소드
 
 	public InvenDto Addcream() {
 		dto = new InvenDto();
@@ -102,7 +102,7 @@ public class AddDao {
 			e.printStackTrace();
 		}
 		return dto;
-	}
+	}//크림 추가 메소드
 
 	public InvenDto Addcup() {
 		dto = new InvenDto();
@@ -123,7 +123,7 @@ public class AddDao {
 			e.printStackTrace();
 		}
 		return dto;
-	}
+	}//컵 추가 메소드
 
 	public InvenDto Addstraw() {
 		dto = new InvenDto();
@@ -144,7 +144,7 @@ public class AddDao {
 			e.printStackTrace();
 		}
 		return dto;
-	}
+	}//빨대 추가 메소드
 
 	public static void main(String[] args) {
 		AddDao add = new AddDao();

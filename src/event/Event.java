@@ -44,10 +44,6 @@ public class Event extends JFrame {
 			}
 		}
 
-		for (int n : num) {
-			System.out.println(n);
-		}
-		System.out.println(Main.telForEvent);
 		setSize(518, 396);
 		getContentPane().setBackground(new Color(204, 255, 255));
 		getContentPane().setLayout(null);

@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 
 public class InfoUpdate {
 	static JTextField tIdKey;
-	private JPasswordField pF1;
+	private JPasswordField pFkey;
 	
 	public InfoUpdate() {
 		JFrame f = new JFrame();
@@ -35,7 +35,7 @@ public class InfoUpdate {
 				String pw = dto.getPw();
 				
 				String id2 = tIdKey.getText();
-				String pw2 = pF1.getText();
+				String pw2 = pFkey.getText();
 				
 				if(id.equals(id2)&&pw.equals(pw2)) {
 					AdminEdit aE = new AdminEdit();
@@ -72,9 +72,9 @@ public class InfoUpdate {
 		LabelTitle.setBounds(134, 10, 126, 28);
 		f.getContentPane().add(LabelTitle);
 		
-		pF1 = new JPasswordField();
-		pF1.setBounds(134, 116, 170, 28);
-		f.getContentPane().add(pF1);
+		pFkey = new JPasswordField();
+		pFkey.setBounds(134, 116, 170, 28);
+		f.getContentPane().add(pFkey);
 		
 		
 		

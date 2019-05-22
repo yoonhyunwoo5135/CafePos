@@ -37,6 +37,8 @@ import inven.Inven;
 import inven.InvenDao;
 import inven.InvenDto;
 import login.Login;
+import login.LoginDao;
+import login.LoginDto;
 import membership.MemberDao;
 import membership.MemberDto;
 import membership.Membership;
@@ -49,6 +51,8 @@ import java.awt.event.KeyEvent;
 public class Main {
 	JButton buttonShowMember;
 	JButton buttonShowChange;
+	static LoginDao ldao = new LoginDao();
+	static LoginDto ldto = new LoginDto();	
 	static MemberDao mdao = new MemberDao();
 	static MemberDto mdto = new MemberDto();
 	static PaybillDTO pdto = new PaybillDTO(); // 결제 내역 관리
@@ -112,6 +116,8 @@ public class Main {
 		JFrame f1 = new JFrame("카페 포스 시스템");
 		f1.setTitle("카페POS프로그램 (Ver 1.01)");
 		f1.getContentPane().setFont(new Font("굴림", Font.PLAIN, 19));
+		f1.setBounds(400, 100, 1080, 800);
+		f1.setResizable(false);
 		f1.setSize(1080, 800);
 		f1.getContentPane().setLayout(null);
 
@@ -357,7 +363,7 @@ public class Main {
 			}// 로그인 화면으로
 		});
 		buttonBack.setFont(new Font("굴림", Font.BOLD, 15));
-		buttonBack.setBounds(642, 30, 130, 60);
+		buttonBack.setBounds(642, 54, 130, 36);
 		f1.getContentPane().add(buttonBack);
 
 		// 메인메뉴 멤버쉽 패널
@@ -658,10 +664,14 @@ public class Main {
 		JButton buttonShowChange = new JButton("입력");
 		buttonShowChange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
-				int takeMoney = Integer.parseInt(textTakemoney.getText());
-				int change = takeMoney - finPrice;
-				labelShowChange.setText(String.valueOf(change) + " 원");
+				if(textTakemoney.getText().trim().equals("")) {
+					textTakemoney.setText("0");
+				}
+				else {
+					int takeMoney = Integer.parseInt(textTakemoney.getText());
+					int change = takeMoney - finPrice;
+					labelShowChange.setText(String.valueOf(change) + " 원");
+				}
 			}
 		});
 		buttonShowChange.setFont(new Font("굴림", Font.PLAIN, 12));
@@ -1085,6 +1095,13 @@ public class Main {
 		labelShowEvent.setFont(new Font("굴림", Font.BOLD, 15));
 		labelShowEvent.setBounds(756, 28, 273, 18);
 		f1.getContentPane().add(labelShowEvent);
+		
+		ldto = ldao.info();
+		
+		JLabel labelLogin = new JLabel("Login: " + ldto.getId());
+		labelLogin.setFont(new Font("굴림", Font.PLAIN, 16));
+		labelLogin.setBounds(642, 28, 130, 27);
+		f1.getContentPane().add(labelLogin);
 
 		f1.setVisible(true);
 	}
