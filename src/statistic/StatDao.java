@@ -15,6 +15,7 @@ public class StatDao {
 	private PreparedStatement ps;
 	private ResultSet rs;
 	private StatDto dto;
+	private StatDto2 dto2;
 	private int asum = 0;
 	private int bsum = 0;
 
@@ -342,7 +343,7 @@ public class StatDao {
 				asum += dto.getTot_price();
 
 			}
-			dto.setviennacoffeeSum(asum);
+			dto.setViennacoffeeSum(asum);
 			bsum = 0;
 			for (int i = 0; i < sum.size(); i++) {
 				dto = new StatDto();
@@ -350,7 +351,7 @@ public class StatDao {
 				bsum += dto.getQuantity();
 
 			}
-			dto.setviennacoffeeTotal(bsum);
+			dto.setViennacoffeeTotal(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -621,10 +622,10 @@ public class StatDao {
 			} // while close
 			asum = sum.size() * 3500;
 
-			dto.setviennacoffeesale(asum);
+			dto.setViennacoffeesale(asum);
 
 			bsum = sum.size();
-			dto.setviennacoffeesalequan(bsum);
+			dto.setViennacoffeesalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -923,7 +924,7 @@ public class StatDao {
 				asum += dto.getTot_price();
 
 			}
-			dto.setviennacoffeeMalesum(asum);
+			dto.setViennacoffeeMalesum(asum);
 			bsum = 0;
 			for (int i = 0; i < sum.size(); i++) {
 				dto = new StatDto();
@@ -931,7 +932,7 @@ public class StatDao {
 				bsum += dto.getQuantity();
 
 			}
-			dto.setviennacoffeeMalequan(bsum);
+			dto.setViennacoffeeMalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -1239,7 +1240,7 @@ public class StatDao {
 				asum += dto.getTot_price();
 
 			}
-			dto.setviennacoffeeFemalesum(asum);
+			dto.setViennacoffeeFemalesum(asum);
 			bsum = 0;
 			for (int i = 0; i < sum.size(); i++) {
 				dto = new StatDto();
@@ -1247,7 +1248,7 @@ public class StatDao {
 				bsum += dto.getQuantity();
 
 			}
-			dto.setviennacoffeeFemalequan(bsum);
+			dto.setViennacoffeeFemalequan(bsum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -1340,7 +1341,7 @@ public class StatDao {
 			user = "root";
 			password = "1234";
 			con = DriverManager.getConnection(url, user, password);
-			String sql = "select * from paybill where pin = ?";
+			String sql = "select * from paybill where pin = ? order by pin desc";
 
 			ps = con.prepareStatement(sql);
 			ps.setString(1, Statistic.pin);
@@ -1432,7 +1433,7 @@ public class StatDao {
 			user = "root";
 			password = "1234";
 			con = DriverManager.getConnection(url, user, password);
-			String sql = "select * from paybill where menu = ?";
+			String sql = "select * from paybill where menu = ? order by pin desc";
 
 			ps = con.prepareStatement(sql);
 			ps.setString(1, Statistic.menu);
@@ -1524,7 +1525,7 @@ public class StatDao {
 			user = "root";
 			password = "1234";
 			con = DriverManager.getConnection(url, user, password);
-			String sql = "select * from paybill where coupon = ?";
+			String sql = "select * from paybill where coupon = ? order by pin desc";
 
 			ps = con.prepareStatement(sql);
 			ps.setString(1, Statistic.coupon);
@@ -1606,5 +1607,600 @@ public class StatDao {
 
 		return dto;
 	}
+	
+	public StatDto espressoday() {
+		ArrayList sum = new ArrayList();
+		dto = new StatDto();
+		try {
+			// 1.드라이버 설정
+			Class.forName("com.mysql.jdbc.Driver");
+			// 2.DB연결
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			// 3.SQL문 설정(객체화)
+			String sql = "select * from paybill where menu = 'espresso' and extract(month from buydate) = ? and extract(day from buydate) = ?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, Statistic.month5);
+			ps.setInt(2, Statistic.day);
+			// 4.SQL문 전송
+			rs = ps.executeQuery();
+			// SQL문의 결과가 있으면, 받아서 처리
+			while (rs.next()) {
+				dto = new StatDto();
+				int quantity = rs.getInt(4);
+				int tot_price = rs.getInt(5);
 
+				dto.setQuantity(quantity);
+				dto.setTot_price(tot_price);
+
+				sum.add(dto);
+			} // while close
+			asum = 0;
+			for (int i = 0; i < sum.size(); i++) {
+				dto = new StatDto();
+				dto = (StatDto) sum.get(i);
+				asum += dto.getTot_price();
+
+			}
+			dto.setEspressoSumd(asum);
+			bsum = 0;
+			for (int i = 0; i < sum.size(); i++) {
+				dto = new StatDto();
+				dto = (StatDto) sum.get(i);
+				bsum += dto.getQuantity();
+
+			}
+			dto.setEspressoTotald(bsum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+		return dto;
+	}
+
+	public StatDto americanoday() {
+		ArrayList sum = new ArrayList();
+		try {
+			// 1.드라이버 설정
+			Class.forName("com.mysql.jdbc.Driver");
+			// 2.DB연결
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			// 3.SQL문 설정(객체화)
+			String sql = "select * from paybill where menu = 'Americano' and extract(month from buydate) = ? and extract(day from buydate) = ?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, Statistic.month5);
+			ps.setInt(2, Statistic.day);
+			// 4.SQL문 전송
+			rs = ps.executeQuery();
+			// SQL문의 결과가 있으면, 받아서 처리
+			while (rs.next()) {
+				dto = new StatDto();
+				int quantity = rs.getInt(4);
+				int tot_price = rs.getInt(5);
+
+				dto.setQuantity(quantity);
+				dto.setTot_price(tot_price);
+
+				sum.add(dto);
+			} // while close
+			asum = 0;
+			for (int i = 0; i < sum.size(); i++) {
+				dto = new StatDto();
+				dto = (StatDto) sum.get(i);
+				asum += dto.getTot_price();
+
+			}
+			dto.setAmericanoSumd(asum);
+
+			bsum = 0;
+			for (int i = 0; i < sum.size(); i++) {
+				dto = new StatDto();
+				dto = (StatDto) sum.get(i);
+				bsum += dto.getQuantity();
+
+			}
+			dto.setAmericanoTotald(bsum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+		return dto;
+	}
+
+	public StatDto caffelatteday() {
+		ArrayList sum = new ArrayList();
+		dto = new StatDto();
+		try {
+			// 1.드라이버 설정
+			Class.forName("com.mysql.jdbc.Driver");
+			// 2.DB연결
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			// 3.SQL문 설정(객체화)
+			String sql = "select * from paybill where menu = 'caffelatte' and extract(month from buydate) = ? and extract(day from buydate) = ?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, Statistic.month5);
+			ps.setInt(2, Statistic.day);
+			// 4.SQL문 전송
+			rs = ps.executeQuery();
+			// SQL문의 결과가 있으면, 받아서 처리
+			while (rs.next()) {
+				dto = new StatDto();
+				int quantity = rs.getInt(4);
+				int tot_price = rs.getInt(5);
+
+				dto.setQuantity(quantity);
+				dto.setTot_price(tot_price);
+
+				sum.add(dto);
+			} // while close
+			asum = 0;
+			for (int i = 0; i < sum.size(); i++) {
+				dto = new StatDto();
+				dto = (StatDto) sum.get(i);
+				asum += dto.getTot_price();
+
+			}
+			dto.setCaffelatteSumd(asum);
+			bsum = 0;
+			for (int i = 0; i < sum.size(); i++) {
+				dto = new StatDto();
+				dto = (StatDto) sum.get(i);
+				bsum += dto.getQuantity();
+
+			}
+			dto.setCaffelatteTotald(bsum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+		return dto;
+	}
+
+	public StatDto viennacoffeeday() {
+		ArrayList sum = new ArrayList();
+		dto = new StatDto();
+		try {
+			// 1.드라이버 설정
+			Class.forName("com.mysql.jdbc.Driver");
+			// 2.DB연결
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			// 3.SQL문 설정(객체화)
+			String sql = "select * from paybill where menu = 'viennacoffee' and extract(month from buydate) = ? and extract(day from buydate) = ?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, Statistic.month5);
+			ps.setInt(2, Statistic.day);
+			// 4.SQL문 전송
+			rs = ps.executeQuery();
+			// SQL문의 결과가 있으면, 받아서 처리
+			while (rs.next()) {
+				dto = new StatDto();
+				int quantity = rs.getInt(4);
+				int tot_price = rs.getInt(5);
+
+				dto.setQuantity(quantity);
+				dto.setTot_price(tot_price);
+
+				sum.add(dto);
+			} // while close
+			asum = 0;
+			for (int i = 0; i < sum.size(); i++) {
+				dto = new StatDto();
+				dto = (StatDto) sum.get(i);
+				asum += dto.getTot_price();
+
+			}
+			dto.setViennacoffeeSumd(asum);
+			bsum = 0;
+			for (int i = 0; i < sum.size(); i++) {
+				dto = new StatDto();
+				dto = (StatDto) sum.get(i);
+				bsum += dto.getQuantity();
+
+			}
+			dto.setViennacoffeeTotald(bsum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+		return dto;
+	}
+
+	public StatDto chocofrappuccinoday() {
+		ArrayList sum = new ArrayList();
+		dto = new StatDto();
+		try {
+			// 1.드라이버 설정
+			Class.forName("com.mysql.jdbc.Driver");
+			// 2.DB연결
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			// 3.SQL문 설정(객체화)
+			String sql = "select * from paybill where menu = 'chocofrappuccino' and extract(month from buydate) = ? and extract(day from buydate) = ?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, Statistic.month5);
+			ps.setInt(2, Statistic.day);
+			// 4.SQL문 전송
+			rs = ps.executeQuery();
+			// SQL문의 결과가 있으면, 받아서 처리
+			while (rs.next()) {
+				dto = new StatDto();
+				int quantity = rs.getInt(4);
+				int tot_price = rs.getInt(5);
+
+				dto.setQuantity(quantity);
+				dto.setTot_price(tot_price);
+
+				sum.add(dto);
+			} // while close
+			asum = 0;
+			for (int i = 0; i < sum.size(); i++) {
+				dto = new StatDto();
+				dto = (StatDto) sum.get(i);
+				asum += dto.getTot_price();
+
+			}
+			dto.setChocofrappuccinoSumd(asum);
+			bsum = 0;
+			for (int i = 0; i < sum.size(); i++) {
+				dto = new StatDto();
+				dto = (StatDto) sum.get(i);
+				bsum += dto.getQuantity();
+
+			}
+			dto.setChocofrappuccinoTotald(bsum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+		return dto;
+
+	}
+	
+	
+	public StatDto2 espressosaled() {
+		ArrayList sum = new ArrayList();
+		dto2 = new StatDto2();
+		try {
+			// 1.드라이버 설정
+			Class.forName("com.mysql.jdbc.Driver");
+			// 2.DB연결
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			// 3.SQL문 설정(객체화)
+			String sql = "select * from paybill where menu = 'espresso' and extract(month from buydate) = ? and extract(day from buydate) = ? and coupon = 'o'";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, Statistic.month5);
+			ps.setInt(2, Statistic.day);
+			// 4.SQL문 전송
+			rs = ps.executeQuery();
+			// SQL문의 결과가 있으면, 받아서 처리
+			while (rs.next()) {
+				dto2 = new StatDto2();
+				int quantity = rs.getInt(4);
+				int tot_price = rs.getInt(5);
+
+				dto2.setQuantity(quantity);
+				dto2.setTot_price(tot_price);
+
+				sum.add(dto2);
+			} // while close
+			asum = sum.size() * 2500;
+
+			dto2.setEspressosaled(asum);
+
+			bsum = sum.size();
+			dto2.setEspressosalequand(bsum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+		return dto2;
+	}
+
+	public StatDto2 americanosaled() {
+		ArrayList sum = new ArrayList();
+		dto2 = new StatDto2();
+		try {
+			// 1.드라이버 설정
+			Class.forName("com.mysql.jdbc.Driver");
+			// 2.DB연결
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			// 3.SQL문 설정(객체화)
+			String sql = "select * from paybill where menu = 'Americano' and extract(month from buydate) = ? and extract(day from buydate) = ? and coupon = 'o'";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, Statistic.month5);
+			ps.setInt(2, Statistic.day);
+			// 4.SQL문 전송
+			rs = ps.executeQuery();
+			// SQL문의 결과가 있으면, 받아서 처리
+			while (rs.next()) {
+				dto2 = new StatDto2();
+				int quantity = rs.getInt(4);
+				int tot_price = rs.getInt(5);
+
+				dto2.setQuantity(quantity);
+				dto2.setTot_price(tot_price);
+
+				sum.add(dto2);
+			} // while close
+			asum = sum.size() * 3000;
+
+			dto2.setAmericanosaled(asum);
+
+			bsum = sum.size();
+			dto2.setAmericanosalequand(bsum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+		return dto2;
+	}
+
+	public StatDto2 caffelattesaled() {
+		ArrayList sum = new ArrayList();
+		dto2 = new StatDto2();
+		try {
+			// 1.드라이버 설정
+			Class.forName("com.mysql.jdbc.Driver");
+			// 2.DB연결
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			// 3.SQL문 설정(객체화)
+			String sql = "select * from paybill where menu = 'caffelatte' and extract(month from buydate) = ? and extract(day from buydate) = ? and coupon = 'o'";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, Statistic.month5);
+			ps.setInt(2, Statistic.day);
+			// 4.SQL문 전송
+			rs = ps.executeQuery();
+			// SQL문의 결과가 있으면, 받아서 처리
+			while (rs.next()) {
+				dto2 = new StatDto2();
+				int quantity = rs.getInt(4);
+				int tot_price = rs.getInt(5);
+
+				dto2.setQuantity(quantity);
+				dto2.setTot_price(tot_price);
+
+				sum.add(dto2);
+			} // while close
+			asum = sum.size() * 3500;
+
+			dto2.setCaffelattesaled(asum);
+
+			bsum = sum.size();
+			dto2.setCaffelattesalequand(bsum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+		return dto2;
+	}
+
+	public StatDto2 viennacoffeesaled() {
+		ArrayList sum = new ArrayList();
+		dto2 = new StatDto2();
+		try {
+			// 1.드라이버 설정
+			Class.forName("com.mysql.jdbc.Driver");
+			// 2.DB연결
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			// 3.SQL문 설정(객체화)
+			String sql = "select * from paybill where menu = 'viennacoffee' and extract(month from buydate) = ? and extract(day from buydate) = ? and coupon = 'o'";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, Statistic.month5);
+			ps.setInt(2, Statistic.day);
+			// 4.SQL문 전송
+			rs = ps.executeQuery();
+			// SQL문의 결과가 있으면, 받아서 처리
+			while (rs.next()) {
+				dto2 = new StatDto2();
+				int quantity = rs.getInt(4);
+				int tot_price = rs.getInt(5);
+
+				dto2.setQuantity(quantity);
+				dto2.setTot_price(tot_price);
+
+				sum.add(dto2);
+			} // while close
+			asum = sum.size() * 3500;
+
+			dto2.setViennacoffeesaled(asum);
+
+			bsum = sum.size();
+			dto2.setViennacoffeesalequand(bsum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+		return dto2;
+	}
+
+	public StatDto2 chocofrappuccinosaled() {
+		ArrayList sum = new ArrayList();
+		dto2 = new StatDto2();
+		try {
+			// 1.드라이버 설정
+			Class.forName("com.mysql.jdbc.Driver");
+			// 2.DB연결
+			url = "jdbc:mysql://localhost:3306/cafe";
+			user = "root";
+			password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			// 3.SQL문 설정(객체화)
+			String sql = "select * from paybill where menu = 'chocofrappuccino' and extract(month from buydate) = ? and extract(day from buydate) = ? and coupon = 'o'";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, Statistic.month5);
+			ps.setInt(2, Statistic.day);
+			// 4.SQL문 전송
+			rs = ps.executeQuery();
+			// SQL문의 결과가 있으면, 받아서 처리
+			while (rs.next()) {
+				dto2 = new StatDto2();
+				int quantity = rs.getInt(4);
+				int tot_price = rs.getInt(5);
+
+				dto2.setQuantity(quantity);
+				dto2.setTot_price(tot_price);
+
+				sum.add(dto2);
+			} // while close
+
+			asum = sum.size() * 4000;
+
+			dto2.setChocofrappuccinosaled(asum);
+
+			bsum = sum.size();
+			dto2.setChocofrappuccinosalequand(bsum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (ps != null)
+					ps.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+		return dto2;
+
+	}
+
+	
 }

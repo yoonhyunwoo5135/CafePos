@@ -53,35 +53,117 @@ public class StatDto {
 	private int caffelatteFemalequan;
 	private int viennacoffeeFemalequan;
 	private int chocofrappuccinoFemalequan;
-	
+	private int espressoSumd;
+	private int espressoTotald;
+	private int americanoSumd;
+	private int americanoTotald;
+	private int caffelatteSumd;
+	private int caffelatteTotald;
+	private int viennacoffeeSumd;
+	private int viennacoffeeTotald;
+	private int chocofrappuccinoSumd;
+	private int chocofrappuccinoTotald;
+
 	public StatDto() {
-		
+
 	}
-	
+
+	public int getEspressoSumd() {
+		return espressoSumd;
+	}
+
+	public void setEspressoSumd(int espressoSumd) {
+		this.espressoSumd = espressoSumd;
+	}
+
+	public int getEspressoTotald() {
+		return espressoTotald;
+	}
+
+	public void setEspressoTotald(int espressoTotald) {
+		this.espressoTotald = espressoTotald;
+	}
+
+	public int getAmericanoSumd() {
+		return americanoSumd;
+	}
+
+	public void setAmericanoSumd(int americanoSumd) {
+		this.americanoSumd = americanoSumd;
+	}
+
+	public int getAmericanoTotald() {
+		return americanoTotald;
+	}
+
+	public void setAmericanoTotald(int americanoTotald) {
+		this.americanoTotald = americanoTotald;
+	}
+
+	public int getCaffelatteSumd() {
+		return caffelatteSumd;
+	}
+
+	public void setCaffelatteSumd(int caffelatteSumd) {
+		this.caffelatteSumd = caffelatteSumd;
+	}
+
+	public int getCaffelatteTotald() {
+		return caffelatteTotald;
+	}
+
+	public void setCaffelatteTotald(int caffelatteTotald) {
+		this.caffelatteTotald = caffelatteTotald;
+	}
+
+	public int getViennacoffeeSumd() {
+		return viennacoffeeSumd;
+	}
+
+	public void setViennacoffeeSumd(int viennacoffeeSumd) {
+		this.viennacoffeeSumd = viennacoffeeSumd;
+	}
+
+	public int getChocofrappuccinoSumd() {
+		return chocofrappuccinoSumd;
+	}
+
+	public void setChocofrappuccinoSumd(int chocofrappuccinoSumd) {
+		this.chocofrappuccinoSumd = chocofrappuccinoSumd;
+	}
+
+	public int getChocofrappuccinoTotald() {
+		return chocofrappuccinoTotald;
+	}
+
+	public void setChocofrappuccinoTotald(int chocofrappuccinoTotald) {
+		this.chocofrappuccinoTotald = chocofrappuccinoTotald;
+	}
+
 	public int getMenucount() {
 		return menucount;
 	}
-	
+
 	public void setMenucount(int menucount) {
 		this.menucount = menucount;
 	}
-	
+
 	public int getCouponcount() {
 		return couponcount;
 	}
-	
+
 	public void setCouponcount(int couponcount) {
 		this.couponcount = couponcount;
 	}
-	
+
 	public int getPincount() {
 		return pincount;
 	}
-	
+
 	public void setPincount(int pincount) {
 		this.pincount = pincount;
 	}
-	
+
 	public int getChocofrappuccinoFemalequan() {
 		return chocofrappuccinoFemalequan;
 	}
@@ -89,7 +171,6 @@ public class StatDto {
 	public void setChocofrappuccinoFemalequan(int chocofrappuccinoFemalequan) {
 		this.chocofrappuccinoFemalequan = chocofrappuccinoFemalequan;
 	}
-
 
 	public int getPin() {
 		return pin;
@@ -211,22 +292,6 @@ public class StatDto {
 		this.caffelatteTotal = caffelatteTotal;
 	}
 
-	public int getviennacoffeeSum() {
-		return viennacoffeeSum;
-	}
-
-	public void setviennacoffeeSum(int viennacoffeeSum) {
-		this.viennacoffeeSum = viennacoffeeSum;
-	}
-
-	public int getviennacoffeeTotal() {
-		return viennacoffeeTotal;
-	}
-
-	public void setviennacoffeeTotal(int viennacoffeeTotal) {
-		this.viennacoffeeTotal = viennacoffeeTotal;
-	}
-
 	public int getChocofrappuccinoSum() {
 		return chocofrappuccinoSum;
 	}
@@ -291,22 +356,6 @@ public class StatDto {
 		this.caffelattesalequan = caffelattesalequan;
 	}
 
-	public int getviennacoffeesale() {
-		return viennacoffeesale;
-	}
-
-	public void setviennacoffeesale(int viennacoffeesale) {
-		this.viennacoffeesale = viennacoffeesale;
-	}
-
-	public int getviennacoffeesalequan() {
-		return viennacoffeesalequan;
-	}
-
-	public void setviennacoffeesalequan(int viennacoffeesalequan) {
-		this.viennacoffeesalequan = viennacoffeesalequan;
-	}
-
 	public int getChocofrappuccinosale() {
 		return chocofrappuccinosale;
 	}
@@ -347,14 +396,6 @@ public class StatDto {
 		this.caffelatteMalesum = caffelatteMalesum;
 	}
 
-	public int getviennacoffeeMalesum() {
-		return viennacoffeeMalesum;
-	}
-
-	public void setviennacoffeeMalesum(int viennacoffeeMalesum) {
-		this.viennacoffeeMalesum = viennacoffeeMalesum;
-	}
-
 	public int getChocofrappuccinoMalesum() {
 		return chocofrappuccinoMalesum;
 	}
@@ -385,14 +426,6 @@ public class StatDto {
 
 	public void setCaffelatteMalequan(int caffelatteMalequan) {
 		this.caffelatteMalequan = caffelatteMalequan;
-	}
-
-	public int getviennacoffeeMalequan() {
-		return viennacoffeeMalequan;
-	}
-
-	public void setviennacoffeeMalequan(int viennacoffeeMalequan) {
-		this.viennacoffeeMalequan = viennacoffeeMalequan;
 	}
 
 	public int getChocofrappuccinoMalequan() {
@@ -427,14 +460,6 @@ public class StatDto {
 		this.caffelatteFemalesum = caffelatteFemalesum;
 	}
 
-	public int getviennacoffeeFemalesum() {
-		return viennacoffeeFemalesum;
-	}
-
-	public void setviennacoffeeFemalesum(int viennacoffeeFemalesum) {
-		this.viennacoffeeFemalesum = viennacoffeeFemalesum;
-	}
-
 	public int getChocofrappuccinoFemalesum() {
 		return chocofrappuccinoFemalesum;
 	}
@@ -467,12 +492,77 @@ public class StatDto {
 		this.caffelatteFemalequan = caffelatteFemalequan;
 	}
 
-	public int getviennacoffeeFemalequan() {
+	public int getViennacoffeeSum() {
+		return viennacoffeeSum;
+	}
+
+	public void setViennacoffeeSum(int viennacoffeeSum) {
+		this.viennacoffeeSum = viennacoffeeSum;
+	}
+
+	public int getViennacoffeeTotal() {
+		return viennacoffeeTotal;
+	}
+
+	public void setViennacoffeeTotal(int viennacoffeeTotal) {
+		this.viennacoffeeTotal = viennacoffeeTotal;
+	}
+
+	public int getViennacoffeesale() {
+		return viennacoffeesale;
+	}
+
+	public void setViennacoffeesale(int viennacoffeesale) {
+		this.viennacoffeesale = viennacoffeesale;
+	}
+
+	public int getViennacoffeesalequan() {
+		return viennacoffeesalequan;
+	}
+
+	public void setViennacoffeesalequan(int viennacoffeesalequan) {
+		this.viennacoffeesalequan = viennacoffeesalequan;
+	}
+
+	public int getViennacoffeeMalesum() {
+		return viennacoffeeMalesum;
+	}
+
+	public void setViennacoffeeMalesum(int viennacoffeeMalesum) {
+		this.viennacoffeeMalesum = viennacoffeeMalesum;
+	}
+
+	public int getViennacoffeeMalequan() {
+		return viennacoffeeMalequan;
+	}
+
+	public void setViennacoffeeMalequan(int viennacoffeeMalequan) {
+		this.viennacoffeeMalequan = viennacoffeeMalequan;
+	}
+
+	public int getViennacoffeeFemalesum() {
+		return viennacoffeeFemalesum;
+	}
+
+	public void setViennacoffeeFemalesum(int viennacoffeeFemalesum) {
+		this.viennacoffeeFemalesum = viennacoffeeFemalesum;
+	}
+
+	public int getViennacoffeeFemalequan() {
 		return viennacoffeeFemalequan;
 	}
 
-	public void setviennacoffeeFemalequan(int viennacoffeeFemalequan) {
+	public void setViennacoffeeFemalequan(int viennacoffeeFemalequan) {
 		this.viennacoffeeFemalequan = viennacoffeeFemalequan;
 	}
-	
+
+	public int getViennacoffeeTotald() {
+		return viennacoffeeTotald;
+	}
+
+	public void setViennacoffeeTotald(int bsum) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

@@ -15,11 +15,13 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import java.awt.Font;
 
 public class Statistic {
 	static DefaultTableModel tmodel;
 	static DefaultTableModel tmodel1;
 	static DefaultTableModel tmodel2;
+	static DefaultTableModel tmodel3;
 	StatDto dto;
 	StatDto dto1;
 	StatDto dto2;
@@ -42,11 +44,23 @@ public class Statistic {
 	StatDto dto19;
 	StatDto dto20;
 	StatDto dto21;
+	StatDto dto22;
+	StatDto dto23;
+	StatDto dto24;
+	StatDto dto25;
+	StatDto2 dto26;
+	StatDto2 dto27;
+	StatDto2 dto28;
+	StatDto2 dto29;
+	StatDto2 dto30;
 	private JTable table;
 	private JTable table1;
 	private JTable table2;
+	private JTable table3;
 	static int month1;
 	static int month3;
+	static int month5;
+	static int day;
 	static String pin;
 	static String menu;
 	static String coupon;
@@ -84,6 +98,16 @@ public class Statistic {
 		dto18 = dao.caffelattefemale();
 		dto19 = dao.viennacoffeefemale();
 		dto20 = dao.chocofrappuccinofemale();
+		dto21 = dao.espressoday();
+		dto22 = dao.americanoday();
+		dto23 = dao.caffelatteday();
+		dto24 = dao.viennacoffeeday();
+		dto25 = dao.chocofrappuccinoday();
+		dto26 = dao.espressosaled();
+		dto27 = dao.americanosaled();
+		dto28 = dao.caffelattesaled();
+		dto29 = dao.viennacoffeesaled();
+		dto30 = dao.chocofrappuccinosaled();
 
 		JFrame f = new JFrame();
 		f.setSize(1080, 800);
@@ -187,7 +211,6 @@ public class Statistic {
 						obj[6] = pdto.getCoupon();
 						obj[7] = pdto.getGender();
 						obj[8] = pdto.getBuydate();
-						System.out.println(dto.getPincount());
 						tmodel.addRow(obj);
 					}
 
@@ -211,7 +234,6 @@ public class Statistic {
 						obj[6] = mdto.getCoupon();
 						obj[7] = mdto.getGender();
 						obj[8] = mdto.getBuydate();
-						System.out.println(dto.getMenucount());
 						tmodel.addRow(obj);
 					}
 
@@ -235,7 +257,6 @@ public class Statistic {
 						obj[6] = cdto.getCoupon();
 						obj[7] = cdto.getGender();
 						obj[8] = cdto.getBuydate();
-						System.out.println(dto.getCouponcount());
 						tmodel.addRow(obj);
 					}
 
@@ -244,22 +265,29 @@ public class Statistic {
 		});
 		buttonSearch3.setBounds(338, 42, 63, 27);
 		f.getContentPane().add(buttonSearch3);
-
+		
+		int result = dto1.getEspressoTotal() + dto2.getAmericanoTotal() + dto3.getCaffelatteTotal()
+		+ dto4.getViennacoffeeTotal() + dto5.getChocofrappuccinoTotal();
+		int result2 = dto1.getEspressoSum() + dto2.getAmericanoSum() + dto3.getCaffelatteSum()
+		+ dto4.getViennacoffeeSum() + dto5.getChocofrappuccinoSum();
+						
 		String[] header1 = { "메뉴명", "판매량", "총매출" };
 		Object[][] contents1 = { { "Espresso", dto1.getEspressoTotal(), dto1.getEspressoSum() },
 				{ "Americano", dto2.getAmericanoTotal(), dto2.getAmericanoSum() },
 				{ "Caffelatte", dto3.getCaffelatteTotal(), dto3.getCaffelatteSum() },
-				{ "viennacoffee", dto4.getviennacoffeeTotal(), dto4.getviennacoffeeSum() },
-				{ "Chocofrappuccino", dto5.getChocofrappuccinoTotal(), dto5.getChocofrappuccinoSum() } };
+				{ "viennacoffee", dto4.getViennacoffeeTotal(), dto4.getViennacoffeeSum() },
+				{ "Chocofrappuccino", dto5.getChocofrappuccinoTotal(), dto5.getChocofrappuccinoSum()},
+				{ "총 판매량 / 총 매출", result, result2}};
 		tmodel1 = new DefaultTableModel(header1, 0);
 		tmodel1.addRow(contents1[0]);// 테이블 내용 최신화를 위한 기본 세팅
 		tmodel1.addRow(contents1[1]);
 		tmodel1.addRow(contents1[2]);
 		tmodel1.addRow(contents1[3]);
 		tmodel1.addRow(contents1[4]);
+		tmodel1.addRow(contents1[5]);
 		table1 = new JTable(tmodel1);
 		JScrollPane scrollPane1 = new JScrollPane();
-		scrollPane1.setBounds(742, 79, 310, 167);
+		scrollPane1.setBounds(742, 79, 310, 119);
 		f.getContentPane().add(scrollPane1);
 		scrollPane1.setViewportView(table1);
 
@@ -273,7 +301,7 @@ public class Statistic {
 		buttonSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				month1 = Integer.parseInt(comboBoxMonth.getSelectedItem().toString());
-				for (int i = 4; i >= 0; i--) {
+				for (int i = 5; i >= 0; i--) {
 					tmodel1.removeRow(i);
 				}
 				dto1 = dao.espresso();
@@ -292,25 +320,31 @@ public class Statistic {
 				contents1[1][2] = dto2.getAmericanoSum() - dto7.getAmericanosale();
 				contents1[2][1] = dto3.getCaffelatteTotal() - dto8.getCaffelattesalequan();
 				contents1[2][2] = dto3.getCaffelatteSum() - dto8.getCaffelattesale();
-				contents1[3][1] = dto4.getviennacoffeeTotal() - dto9.getviennacoffeesalequan();
-				contents1[3][2] = dto4.getviennacoffeeSum() - dto9.getviennacoffeesale();
+				contents1[3][1] = dto4.getViennacoffeeTotal() - dto9.getViennacoffeesalequan();
+				contents1[3][2] = dto4.getViennacoffeeSum() - dto9.getViennacoffeesale();
 				contents1[4][1] = dto5.getChocofrappuccinoTotal() - dto10.getChocofrappuccinosalequan();
 				contents1[4][2] = dto5.getChocofrappuccinoSum() - dto10.getChocofrappuccinosale();// 할인 적용 및 통계 수량
+				int result = (int)contents1[0][1] + (int)contents1[1][1] + (int)contents1[2][1] + (int)contents1[3][1] + (int)contents1[4][1];
+				int result2 = (int)contents1[0][2] + (int)contents1[1][2] + (int)contents1[2][2] + (int)contents1[3][2] + (int)contents1[4][2];
+				
+				contents1[5][1] = result;
+				contents1[5][2] = result2;
 				tmodel1.addRow(contents1[0]);
 				tmodel1.addRow(contents1[1]);
 				tmodel1.addRow(contents1[2]);
 				tmodel1.addRow(contents1[3]);
 				tmodel1.addRow(contents1[4]);
+				tmodel1.addRow(contents1[5]);
 			}// 검색 버튼
 		});
-		buttonSearch.setBounds(817, 42, 63, 27);
+		buttonSearch.setBounds(855, 42, 63, 27);
 		f.getContentPane().add(buttonSearch);
 
 		String[] header2 = { "메뉴명", "판매량", "총매출" };
 		Object[][] contents2 = { { "Espresso", dto11.getEspressoMalequan(), dto11.getEspressoMalesum() },
 				{ "Americano", dto12.getAmericanoMalequan(), dto12.getAmericanoMalesum() },
 				{ "Caffelatte", dto13.getCaffelatteMalequan(), dto13.getCaffelatteMalesum() },
-				{ "viennacoffee", dto14.getviennacoffeeMalequan(), dto14.getviennacoffeeMalesum() },
+				{ "viennacoffee", dto14.getViennacoffeeMalequan(), dto14.getViennacoffeeMalesum() },
 				{ "Chocofrappuccino", dto15.getChocofrappuccinoMalequan(), dto15.getChocofrappuccinoMalesum() } };
 		tmodel2 = new DefaultTableModel(header2, 0);
 		tmodel2.addRow(contents2[0]);// 테이블 내용 최신화를 위한 기본 세팅
@@ -321,20 +355,20 @@ public class Statistic {
 		table2 = new JTable(tmodel2);
 
 		JScrollPane scrollPane2 = new JScrollPane();
-		scrollPane2.setBounds(742, 293, 310, 232);
+		scrollPane2.setBounds(742, 245, 310, 103);
 		f.getContentPane().add(scrollPane2);
 		scrollPane2.setViewportView(table2);
 
 		String[] month2 = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
 
 		JComboBox comboBoxMonth2 = new JComboBox(month2);
-		comboBoxMonth2.setBounds(742, 256, 63, 27);
+		comboBoxMonth2.setBounds(742, 208, 63, 27);
 		f.getContentPane().add(comboBoxMonth2);
 
 		Object[] gender = { "male", "female" };
 
 		JComboBox comboBoxgender = new JComboBox(gender);
-		comboBoxgender.setBounds(817, 256, 63, 27);
+		comboBoxgender.setBounds(855, 208, 63, 27);
 		f.getContentPane().add(comboBoxgender);
 
 		JButton buttonSearch2 = new JButton("검색");
@@ -358,8 +392,8 @@ public class Statistic {
 					contents2[1][2] = dto12.getAmericanoMalesum() - dto7.getAmericanosale();
 					contents2[2][1] = dto13.getCaffelatteMalequan() - dto8.getCaffelattesalequan();
 					contents2[2][2] = dto13.getCaffelatteMalesum() - dto8.getCaffelattesale();
-					contents2[3][1] = dto14.getviennacoffeeMalequan() - dto9.getviennacoffeesalequan();
-					contents2[3][2] = dto14.getviennacoffeeMalesum() - dto9.getviennacoffeesale();
+					contents2[3][1] = dto14.getViennacoffeeMalequan() - dto9.getViennacoffeesalequan();
+					contents2[3][2] = dto14.getViennacoffeeMalesum() - dto9.getViennacoffeesale();
 					contents2[4][1] = dto15.getChocofrappuccinoMalequan() - dto10.getChocofrappuccinosalequan();
 					contents2[4][2] = dto15.getChocofrappuccinoMalesum() - dto10.getChocofrappuccinosale();// 할인 적용 및 통계
 																											// 수량
@@ -389,8 +423,8 @@ public class Statistic {
 					contents2[1][2] = dto17.getAmericanoFemalesum() - dto7.getAmericanosale();
 					contents2[2][1] = dto18.getCaffelatteFemalequan() - dto8.getCaffelattesalequan();
 					contents2[2][2] = dto18.getCaffelatteFemalesum() - dto8.getCaffelattesale();
-					contents2[3][1] = dto19.getviennacoffeeFemalequan() - dto9.getviennacoffeesalequan();
-					contents2[3][2] = dto19.getviennacoffeeFemalesum() - dto9.getviennacoffeesale();
+					contents2[3][1] = dto19.getViennacoffeeFemalequan() - dto9.getViennacoffeesalequan();
+					contents2[3][2] = dto19.getViennacoffeeFemalesum() - dto9.getViennacoffeesale();
 					contents2[4][1] = dto20.getChocofrappuccinoFemalequan() - dto10.getChocofrappuccinosalequan();
 					contents2[4][2] = dto20.getChocofrappuccinoFemalesum() - dto10.getChocofrappuccinosale();// 할인 적용 및
 																												// 통계
@@ -405,8 +439,110 @@ public class Statistic {
 				}
 			}// 검색 버튼
 		});
-		buttonSearch2.setBounds(892, 256, 63, 27);
+		buttonSearch2.setBounds(971, 208, 63, 27);
 		f.getContentPane().add(buttonSearch2);
+		
+		
+		JScrollPane scrollPane3 = new JScrollPane();
+		scrollPane3.setBounds(742, 395, 310, 130);
+		f.getContentPane().add(scrollPane3);
+		
+		String[] header3 = { "메뉴명", "일판매량", "일매출" };
+		Object[][] contents3 = { { "Espresso", dto21.getEspressoTotald(), dto21.getEspressoSumd() },
+				{ "Americano", dto22.getAmericanoTotald(), dto22.getAmericanoSumd() },
+				{ "Caffelatte", dto23.getCaffelatteTotald(), dto23.getCaffelatteSumd() },
+				{ "viennacoffee", dto24.getViennacoffeeTotald(), dto24.getViennacoffeeSumd() },
+				{ "Chocofrappuccino", dto25.getChocofrappuccinoTotald(), dto25.getChocofrappuccinoSumd() },
+				{ "총 판매량/총매출", 0 , 0}};
+		tmodel3 = new DefaultTableModel(header3, 0);
+		tmodel3.addRow(contents3[0]);// 테이블 내용 최신화를 위한 기본 세팅
+		tmodel3.addRow(contents3[1]);
+		tmodel3.addRow(contents3[2]);
+		tmodel3.addRow(contents3[3]);
+		tmodel3.addRow(contents3[4]);
+		tmodel3.addRow(contents3[5]);
+		table3 = new JTable(tmodel3);
+		scrollPane3.setViewportView(table3);
+		
+		String[] date = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "11", "12", "13", "14",
+				"15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
+		
+		JComboBox comboBoxDate = new JComboBox(date);
+		comboBoxDate.setBounds(855, 358, 63, 27);
+		f.getContentPane().add(comboBoxDate);
+		
+		String[] month4 = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
+		
+		JComboBox comboBoxMonth3 = new JComboBox(month4);
+		comboBoxMonth3.setBounds(742, 358, 63, 27);
+		f.getContentPane().add(comboBoxMonth3);
+		
+		
+		JButton buttonSearch4 = new JButton("검색");
+		buttonSearch4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				month5 = Integer.parseInt(comboBoxMonth3.getSelectedItem().toString());
+				day = Integer.parseInt(comboBoxDate.getSelectedItem().toString());
+				for (int i = 5; i >= 0; i--) {
+					tmodel3.removeRow(i);
+				}
+				dto21 = dao.espressoday();
+				dto22 = dao.americanoday();
+				dto23 = dao.caffelatteday();
+				dto24 = dao.viennacoffeeday();
+				dto25 = dao.chocofrappuccinoday();
+				dto26 = dao.espressosaled();
+				dto27 = dao.americanosaled();
+				dto28 = dao.caffelattesaled();
+				dto29 = dao.viennacoffeesaled();
+				dto30 = dao.chocofrappuccinosaled();
+				contents3[0][1] = dto21.getEspressoTotald() - dto26.getEspressosalequand();
+				contents3[0][2] = dto21.getEspressoSumd() - dto26.getEspressosaled();
+				contents3[1][1] = dto22.getAmericanoTotald() - dto27.getAmericanosalequand();
+				contents3[1][2] = dto22.getAmericanoSumd() - dto27.getAmericanosaled();
+				contents3[2][1] = dto23.getCaffelatteTotald() - dto28.getCaffelattesalequand();
+				contents3[2][2] = dto23.getCaffelatteSumd() - dto28.getCaffelattesaled();
+				contents3[3][1] = dto24.getViennacoffeeTotald() - dto29.getViennacoffeesalequand();
+				contents3[3][2] = dto24.getViennacoffeeSumd() - dto29.getViennacoffeesaled();
+				contents3[4][1] = dto25.getChocofrappuccinoTotald() - dto30.getChocofrappuccinosalequand();
+				contents3[4][2] = dto25.getChocofrappuccinoSumd() - dto30.getChocofrappuccinosaled();// 할인 적용 및 통계 수량
+				int result = (int)contents3[0][1] + (int)contents3[1][1] + (int)contents3[2][1] + (int)contents3[3][1] + (int)contents3[4][1];
+				int result2 = (int)contents3[0][2] + (int)contents3[1][2] + (int)contents3[2][2] + (int)contents3[3][2] + (int)contents3[4][2];
+				
+				contents3[5][1] = result;
+				contents3[5][2] = result2;
+				tmodel3.addRow(contents3[0]);
+				tmodel3.addRow(contents3[1]);
+				tmodel3.addRow(contents3[2]);
+				tmodel3.addRow(contents3[3]);
+				tmodel3.addRow(contents3[4]);
+				tmodel3.addRow(contents3[5]);
+			}//검색
+		});
+		buttonSearch4.setBounds(971, 358, 63, 27);
+		f.getContentPane().add(buttonSearch4);
+		
+		JLabel la1 = new JLabel("월");
+		la1.setFont(new Font("굴림", Font.BOLD, 14));
+		la1.setBounds(819, 41, 57, 27);
+		f.getContentPane().add(la1);
+		
+		JLabel la2 = new JLabel("월");
+		la2.setFont(new Font("굴림", Font.BOLD, 14));
+		la2.setBounds(819, 208, 57, 27);
+		f.getContentPane().add(la2);
+		
+		JLabel la3 = new JLabel("월");
+		la3.setFont(new Font("굴림", Font.BOLD, 14));
+		la3.setBounds(819, 358, 57, 27);
+		f.getContentPane().add(la3);
+		
+		JLabel la4 = new JLabel("일");
+		la4.setFont(new Font("굴림", Font.BOLD, 14));
+		la4.setBounds(930, 358, 57, 27);
+		f.getContentPane().add(la4);
+		
+		
 
 		f.setVisible(true);
 	}
