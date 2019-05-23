@@ -133,7 +133,7 @@ public class Statistic {
 			tmodel.addRow(contents[j]);
 		}
 
-		table = new JTable(tmodel);
+		table = new JTable(tmodel);//통계 테이블
 		DefaultTableCellRenderer dcr = new DefaultTableCellRenderer();
 		dcr.setHorizontalAlignment(SwingConstants.CENTER);
 		TableColumnModel tcm = table.getColumnModel();
@@ -166,7 +166,7 @@ public class Statistic {
 		f.getContentPane().add(t1);
 		t1.setColumns(10);
 
-		JButton buttonSearch3 = new JButton("검색");
+		JButton buttonSearch3 = new JButton("검색");//통계 검색 버튼
 		buttonSearch3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String selected = comboBoxSearch.getSelectedItem().toString();
@@ -265,11 +265,6 @@ public class Statistic {
 		});
 		buttonSearch3.setBounds(338, 42, 63, 27);
 		f.getContentPane().add(buttonSearch3);
-		
-		int result = dto1.getEspressoTotal() + dto2.getAmericanoTotal() + dto3.getCaffelatteTotal()
-		+ dto4.getViennacoffeeTotal() + dto5.getChocofrappuccinoTotal();
-		int result2 = dto1.getEspressoSum() + dto2.getAmericanoSum() + dto3.getCaffelatteSum()
-		+ dto4.getViennacoffeeSum() + dto5.getChocofrappuccinoSum();
 						
 		String[] header1 = { "메뉴명", "판매량", "총매출" };
 		Object[][] contents1 = { { "Espresso", dto1.getEspressoTotal(), dto1.getEspressoSum() },
@@ -277,7 +272,7 @@ public class Statistic {
 				{ "Caffelatte", dto3.getCaffelatteTotal(), dto3.getCaffelatteSum() },
 				{ "viennacoffee", dto4.getViennacoffeeTotal(), dto4.getViennacoffeeSum() },
 				{ "Chocofrappuccino", dto5.getChocofrappuccinoTotal(), dto5.getChocofrappuccinoSum()},
-				{ "총 판매량 / 총 매출", result, result2}};
+				{ "총 판매량 / 총 매출", 0, 0}};
 		tmodel1 = new DefaultTableModel(header1, 0);
 		tmodel1.addRow(contents1[0]);// 테이블 내용 최신화를 위한 기본 세팅
 		tmodel1.addRow(contents1[1]);
@@ -285,7 +280,8 @@ public class Statistic {
 		tmodel1.addRow(contents1[3]);
 		tmodel1.addRow(contents1[4]);
 		tmodel1.addRow(contents1[5]);
-		table1 = new JTable(tmodel1);
+		
+		table1 = new JTable(tmodel1);//월매출 통계 테이블
 		JScrollPane scrollPane1 = new JScrollPane();
 		scrollPane1.setBounds(742, 79, 310, 119);
 		f.getContentPane().add(scrollPane1);
@@ -297,7 +293,7 @@ public class Statistic {
 		comboBoxMonth.setBounds(742, 42, 63, 27);
 		f.getContentPane().add(comboBoxMonth);
 
-		JButton buttonSearch = new JButton("검색");
+		JButton buttonSearch = new JButton("검색");//월별 통계 버튼
 		buttonSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				month1 = Integer.parseInt(comboBoxMonth.getSelectedItem().toString());
@@ -324,8 +320,8 @@ public class Statistic {
 				contents1[3][2] = dto4.getViennacoffeeSum() - dto9.getViennacoffeesale();
 				contents1[4][1] = dto5.getChocofrappuccinoTotal() - dto10.getChocofrappuccinosalequan();
 				contents1[4][2] = dto5.getChocofrappuccinoSum() - dto10.getChocofrappuccinosale();// 할인 적용 및 통계 수량
-				int result = (int)contents1[0][1] + (int)contents1[1][1] + (int)contents1[2][1] + (int)contents1[3][1] + (int)contents1[4][1];
-				int result2 = (int)contents1[0][2] + (int)contents1[1][2] + (int)contents1[2][2] + (int)contents1[3][2] + (int)contents1[4][2];
+				int result = (int)contents1[0][1] + (int)contents1[1][1] + (int)contents1[2][1] + (int)contents1[3][1] + (int)contents1[4][1];//총 판매량 계산
+				int result2 = (int)contents1[0][2] + (int)contents1[1][2] + (int)contents1[2][2] + (int)contents1[3][2] + (int)contents1[4][2];//총 매출 계산
 				
 				contents1[5][1] = result;
 				contents1[5][2] = result2;
@@ -352,8 +348,8 @@ public class Statistic {
 		tmodel2.addRow(contents2[2]);
 		tmodel2.addRow(contents2[3]);
 		tmodel2.addRow(contents2[4]);
-		table2 = new JTable(tmodel2);
-
+		
+		table2 = new JTable(tmodel2);//성별별 통계 테이블
 		JScrollPane scrollPane2 = new JScrollPane();
 		scrollPane2.setBounds(742, 245, 310, 103);
 		f.getContentPane().add(scrollPane2);
@@ -371,7 +367,7 @@ public class Statistic {
 		comboBoxgender.setBounds(855, 208, 63, 27);
 		f.getContentPane().add(comboBoxgender);
 
-		JButton buttonSearch2 = new JButton("검색");
+		JButton buttonSearch2 = new JButton("검색");//성별 통계 버튼
 		buttonSearch2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String selected = comboBoxgender.getSelectedItem().toString();
@@ -437,7 +433,7 @@ public class Statistic {
 					tmodel2.addRow(contents2[4]);
 
 				}
-			}// 검색 버튼
+			}
 		});
 		buttonSearch2.setBounds(971, 208, 63, 27);
 		f.getContentPane().add(buttonSearch2);
@@ -478,7 +474,7 @@ public class Statistic {
 		f.getContentPane().add(comboBoxMonth3);
 		
 		
-		JButton buttonSearch4 = new JButton("검색");
+		JButton buttonSearch4 = new JButton("검색");//일매출 통계 버튼
 		buttonSearch4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				month5 = Integer.parseInt(comboBoxMonth3.getSelectedItem().toString());
@@ -496,6 +492,7 @@ public class Statistic {
 				dto28 = dao.caffelattesaled();
 				dto29 = dao.viennacoffeesaled();
 				dto30 = dao.chocofrappuccinosaled();
+				
 				contents3[0][1] = dto21.getEspressoTotald() - dto26.getEspressosalequand();
 				contents3[0][2] = dto21.getEspressoSumd() - dto26.getEspressosaled();
 				contents3[1][1] = dto22.getAmericanoTotald() - dto27.getAmericanosalequand();
@@ -506,8 +503,8 @@ public class Statistic {
 				contents3[3][2] = dto24.getViennacoffeeSumd() - dto29.getViennacoffeesaled();
 				contents3[4][1] = dto25.getChocofrappuccinoTotald() - dto30.getChocofrappuccinosalequand();
 				contents3[4][2] = dto25.getChocofrappuccinoSumd() - dto30.getChocofrappuccinosaled();// 할인 적용 및 통계 수량
-				int result = (int)contents3[0][1] + (int)contents3[1][1] + (int)contents3[2][1] + (int)contents3[3][1] + (int)contents3[4][1];
-				int result2 = (int)contents3[0][2] + (int)contents3[1][2] + (int)contents3[2][2] + (int)contents3[3][2] + (int)contents3[4][2];
+				int result = (int)contents3[0][1] + (int)contents3[1][1] + (int)contents3[2][1] + (int)contents3[3][1] + (int)contents3[4][1];//총 판매량 계산
+				int result2 = (int)contents3[0][2] + (int)contents3[1][2] + (int)contents3[2][2] + (int)contents3[3][2] + (int)contents3[4][2];//총매출 계산
 				
 				contents3[5][1] = result;
 				contents3[5][2] = result2;
