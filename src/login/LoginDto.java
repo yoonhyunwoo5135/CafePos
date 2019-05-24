@@ -3,9 +3,9 @@ package login;
 public class LoginDto {
 	private String id;
 	private String pw;
-	
+
 	public LoginDto() {
-		
+
 	}
 
 	public String getId() {
@@ -23,6 +23,5 @@ public class LoginDto {
 	public void setPw(String pw) {
 		this.pw = pw;
 	}
-	
-	
+
 }

@@ -446,15 +446,15 @@ public class Event extends JFrame {
 		buttonBox8.setIcon(icon_search);
 		buttonBox8.setBounds(378, 233, 110, 110);
 		getContentPane().add(buttonBox8);
-		
+
 		JButton buttonExit = new JButton("종료");
 		buttonExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(selected == 1) {	// 버튼을 눌러서 랜덤박스를 열었을 경우
+				if (selected == 1) { // 버튼을 눌러서 랜덤박스를 열었을 경우
 					mdao.joinEvent(Main.telForEvent);// 해당 멤버쉽 db에 이벤트 참여하였음을 입력
 				}
 				Main.telForEvent = null;
-				selected = 0;	// 다음 랜덤박스 실행때를 위해 0으로 초기화
+				selected = 0; // 다음 랜덤박스 실행때를 위해 0으로 초기화
 				setVisible(false);
 			}
 		});

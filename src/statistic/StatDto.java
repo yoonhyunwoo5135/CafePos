@@ -560,9 +560,10 @@ public class StatDto {
 		return viennacoffeeTotald;
 	}
 
-	public void setViennacoffeeTotald(int bsum) {
-		// TODO Auto-generated method stub
-
+	public void setViennacoffeeTotald(int viennacoffeeTotald) {
+		this.viennacoffeeTotald = viennacoffeeTotald;
 	}
+
+
 
 }

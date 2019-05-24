@@ -103,6 +103,6 @@ public class InvenDao {
 		}
 
 		return dto;
-	}//재고 목록 불러오는 메소드
+	}// 재고 목록 불러오는 메소드
 
 }

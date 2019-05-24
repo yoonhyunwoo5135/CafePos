@@ -22,8 +22,11 @@ import javax.swing.table.TableColumnModel;
 
 import javax.swing.JToggleButton;
 import pos.Main;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Membership extends JFrame {
+	JButton buttonSearch;
 	static DefaultTableModel tmodel;
 	static int mtableRow = 0; // 멤버쉽 테이블 목록 창
 	static DefaultTableCellRenderer dcr;
@@ -87,16 +90,31 @@ public class Membership extends JFrame {
 		getContentPane().add(comboBox);
 
 		textFindmember = new JTextField();
+		textFindmember.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+					buttonSearch.doClick();
+			}
+		});
 		textFindmember.setBounds(99, 11, 132, 21);
 		getContentPane().add(textFindmember);
 		textFindmember.setColumns(10);
 
-		JButton buttonSearch = new JButton("검색");
+		buttonSearch = new JButton("검색");
+		buttonSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+		});
 		buttonSearch.setBounds(234, 11, 67, 22);
 		buttonSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				labelInsertAlert.setText("");
 				labelDeleteAlert.setText("");
+				if (textFindmember.getText().trim().equals("")) {
+					return;
+				}
 				String selected = comboBox.getSelectedItem().toString();
 				// 메뉴창 초기화
 				for (int i = mtableRow - 1; i >= 0; i--) {
@@ -214,6 +232,10 @@ public class Membership extends JFrame {
 		JButton buttonInsertMem = new JButton("가입하기");
 		buttonInsertMem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (textInputName.getText().trim().equals("") || textInputTel.getText().trim().equals("")) {
+					return;
+				}
+
 				labelInsertAlert.setText("");
 				labelDeleteAlert.setText("");
 				String name = textInputName.getText();
@@ -262,6 +284,9 @@ public class Membership extends JFrame {
 		JButton buttonDeleteMem = new JButton("삭제하기");
 		buttonDeleteMem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (textdeleteTel.getText().trim().equals(""))
+					return;
+
 				labelInsertAlert.setText("");
 				labelDeleteAlert.setText("");
 				String tel = textdeleteTel.getText();
@@ -271,13 +296,13 @@ public class Membership extends JFrame {
 					if (res != 0) { // 0일 경우 delete 수행 안된 것
 						labelDeleteAlert.setText("삭제가 완료되었습니다.");
 						textdeleteTel.setText("");
+					} else {
+						textdeleteTel.setText("");
+						DeleteError de = new DeleteError();
+						return;
 					}
-				} else {
-					textdeleteTel.setText("");
-					return;
 				}
 			}
-
 		});
 		buttonDeleteMem.setBounds(57, 69, 109, 35);
 		panel_1.add(buttonDeleteMem);

@@ -48,11 +48,12 @@ import statistic.Statistic;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class Main {
+public class Main { 
+	JLabel labelNotice; // 맨 밑줄 공지사항 Text
 	JButton buttonShowMember;
 	JButton buttonShowChange;
+	static LoginDto ldto = new LoginDto();
 	static LoginDao ldao = new LoginDao();
-	static LoginDto ldto = new LoginDto();	
 	static MemberDao mdao = new MemberDao();
 	static MemberDto mdto = new MemberDto();
 	static PaybillDTO pdto = new PaybillDTO(); // 결제 내역 관리
@@ -61,14 +62,14 @@ public class Main {
 	static InvenDto idto = new InvenDto();
 	private static JTable table;
 	static DefaultTableModel tmodel;
-	static TableColorCellRenderer dcr;	// '쿠폰사용'열 색상 변경용
-	static DefaultTableCellRenderer dcr2;	// '쿠폰사용' 제외한 나머지 열 가운데 정렬용
+	static TableColorCellRenderer dcr; // '쿠폰사용'열 색상 변경용
+	static DefaultTableCellRenderer dcr2; // '쿠폰사용' 제외한 나머지 열 가운데 정렬용
 	static boolean finish = false;
 	static int tableRow = 0; // 행 수 세는 변수
 	static int finPrice = 0; // 최종 결제 금액
 	static int selectText = 0; // (멤버찾기/받은금액)textfield focus된곳 가리키는 변수
 	public static int eventDoit = 0; // 1이 되면 이벤트 모드 실행임을 가리킴
-	public static String telForEvent = null;	// 이벤트 모드에 적용될 tel번호
+	public static String telForEvent = null; // 이벤트 모드에 적용될 tel번호
 	public static JLabel labelShowEvent;
 	private static JTextField textFindMember;
 	private static JTextField textShowName;
@@ -78,18 +79,18 @@ public class Main {
 	private static JLabel labelDate;
 	private static JLabel labelTime;
 
-	public class TableColorCellRenderer implements TableCellRenderer{	// 개별 행 컬럼에 색상을 적용하기 위해 TableCellRenderer를 오버라이딩
+	public class TableColorCellRenderer implements TableCellRenderer { // 개별 행 컬럼에 색상을 적용하기 위해 TableCellRenderer를 오버라이딩
 		private final TableCellRenderer RENDERER = new DefaultTableCellRenderer();
 
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
 			Component c = RENDERER.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-			
-			if(column == 5) {	// '쿠폰사용' 컬럼에만 적용
-				boolean result = (boolean)table.getModel().getValueAt(row, column);
+
+			if (column == 5) { // '쿠폰사용' 컬럼에만 적용
+				boolean result = (boolean) table.getModel().getValueAt(row, column);
 				Color color = null;
-				if(result == true) {
+				if (result == true) {
 					color = Color.orange;
 					c.setBackground(color);
 					c.setForeground(color);
@@ -101,11 +102,11 @@ public class Main {
 			} else {
 				c.setForeground(Color.black);
 			}
-			
+
 			return c;
 		}
 	}
-	
+
 	public Main() {
 		CoffeeInfo espre = new CoffeeInfo("Espresso", 2500);
 		CoffeeInfo ameri = new CoffeeInfo("Americano", 3000);
@@ -118,21 +119,20 @@ public class Main {
 		f1.getContentPane().setFont(new Font("굴림", Font.PLAIN, 19));
 		f1.setBounds(400, 100, 1080, 800);
 		f1.setResizable(false);
-		f1.setSize(1080, 800);
 		f1.getContentPane().setLayout(null);
 
 		String[] col = { "번호", "메뉴", "단가", "수량", "가격", "쿠폰사용" }; // 열 목록
 
 		tmodel = new DefaultTableModel(col, 0);
 		dcr = new TableColorCellRenderer(); // 직접 만든 셀 다루는 객체 (5열 색상)
-		dcr2 = new DefaultTableCellRenderer();	// 기본적으로 있는 셀 다루는 객체 (5열 제외 가운데 정렬)
+		dcr2 = new DefaultTableCellRenderer(); // 기본적으로 있는 셀 다루는 객체 (5열 제외 가운데 정렬)
 		dcr2.setHorizontalAlignment(SwingConstants.CENTER); //
 		table = new JTable(tmodel);
 
 		TableColumnModel tcm = table.getColumnModel(); // 테이블 가운데 정렬
 		for (int i = 0; i < tcm.getColumnCount(); i++) {
 			tcm.getColumn(i).setCellRenderer(dcr); // table에서 컬럼을 불러온 뒤 셀의 속성을 설정 ("쿠폰사용"열 색상)
-			tcm.getColumn(i).setCellRenderer(dcr2); // table에서 컬럼을 불러온 뒤 셀의 속성을 설정	(가운데 정렬)		
+			tcm.getColumn(i).setCellRenderer(dcr2); // table에서 컬럼을 불러온 뒤 셀의 속성을 설정 (가운데 정렬)
 		}
 		table.setRowHeight(40); // 행 높이 조절
 		table.getColumnModel().getColumn(0).setPreferredWidth(5); // 1번째 열 넓이 조절
@@ -363,7 +363,7 @@ public class Main {
 			}// 로그인 화면으로
 		});
 		buttonBack.setFont(new Font("굴림", Font.BOLD, 15));
-		buttonBack.setBounds(642, 54, 130, 36);
+		buttonBack.setBounds(642, 55, 130, 35);
 		f1.getContentPane().add(buttonBack);
 
 		// 메인메뉴 멤버쉽 패널
@@ -378,8 +378,8 @@ public class Main {
 		textFindMember = new JTextField();
 		textFindMember.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {	// 키보드 엔터 눌렀을때 검색 버튼 누르기 실행
-				if(e.getKeyCode() == KeyEvent.VK_ENTER)
+			public void keyPressed(KeyEvent e) { // 키보드 엔터 눌렀을때 검색 버튼 누르기 실행
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 					buttonShowMember.doClick();
 			}
 		});
@@ -463,11 +463,11 @@ public class Main {
 				textShowName.setText("");
 				textShowStamp.setText("");
 				textShowTel.setText("");
-				if(eventDoit == 1) {
+				if (eventDoit == 1) {
 					labelShowEvent.setText("이벤트 모드 On");
 					labelShowEvent.setForeground(new Color(0, 128, 0));
 				}
-					
+
 				labelMemberAlert.setText("* 손님에게 항상 친절하게 *");
 			}
 		});
@@ -493,8 +493,8 @@ public class Main {
 				textShowName.setText(mdto.getName());
 				textShowTel.setText(mdto.getTel());
 				textShowStamp.setText(String.valueOf(mdto.getStamp()));
-				
-				if (eventDoit == 1) {	// 이벤트 실행 중일때
+
+				if (eventDoit == 1) { // 이벤트 실행 중일때
 					if (mdto.getEvent() == 1) { // 이미 이벤트를 참여했을때 라벨로 표시
 						labelShowEvent.setText("이벤트 참여한 회원");
 						labelShowEvent.setForeground(Color.red);
@@ -582,12 +582,12 @@ public class Main {
 		textTakemoney = new JTextField();
 		textTakemoney.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {	// 키보드 엔터 눌렀을때 검색 버튼 누르기 실행
-				if(e.getKeyCode() == KeyEvent.VK_ENTER)
+			public void keyPressed(KeyEvent e) { // 키보드 엔터 눌렀을때 검색 버튼 누르기 실행
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 					buttonShowChange.doClick();
 			}
 		});
-		textTakemoney.addFocusListener(new FocusAdapter() {	// 커서 깜빡일때 화상키보드가 여기에 입력되도록
+		textTakemoney.addFocusListener(new FocusAdapter() { // 커서 깜빡일때 화상키보드가 여기에 입력되도록
 			@Override
 			public void focusGained(FocusEvent e) {
 				selectText = 1;
@@ -664,14 +664,13 @@ public class Main {
 		JButton buttonShowChange = new JButton("입력");
 		buttonShowChange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(textTakemoney.getText().trim().equals("")) {
+				if (textTakemoney.getText().trim().equals("")) { // 아무 값도 입력 안되어있을때
 					textTakemoney.setText("0");
 				}
-				else {
-					int takeMoney = Integer.parseInt(textTakemoney.getText());
-					int change = takeMoney - finPrice;
-					labelShowChange.setText(String.valueOf(change) + " 원");
-				}
+				int takeMoney = Integer.parseInt(textTakemoney.getText());
+				int change = takeMoney - finPrice;
+				labelShowChange.setText(String.valueOf(change) + " 원");
+
 			}
 		});
 		buttonShowChange.setFont(new Font("굴림", Font.PLAIN, 12));
@@ -921,7 +920,7 @@ public class Main {
 		});
 		btnAc.setForeground(Color.RED);
 		btnAc.setFont(new Font("굴림", Font.BOLD, 23));
-		btnAc.setBackground(new Color(153, 153, 153));
+		btnAc.setBackground(SystemColor.controlHighlight);
 		btnAc.setBounds(12, 91, 116, 56);
 		panel_8.add(btnAc);
 		// 멤버쉽 패널 끝
@@ -997,13 +996,13 @@ public class Main {
 						} else if (mdto.getStamp() < couponCnt * 10) { // 쿠폰 사용하기에 스탬프 수 부족할 경우 메시지
 							NotEnoughStamp not = new NotEnoughStamp();
 							return;
-						} else {	
-							mdao.UseStamp(mdto.getTel(), couponCnt);	// 쿠폰 적용 수량 * 10만큼 스탬프 차감
+						} else {
+							mdao.UseStamp(mdto.getTel(), couponCnt); // 쿠폰 적용 수량 * 10만큼 스탬프 차감
 							int cnt = 0;
 							for (int i = 0; i < table.getRowCount(); i++) {
 								cnt += (int) table.getValueAt(i, 3);
 							}
-							mdao.plusStamp(mdto.getTel(), cnt - couponCnt);	// 총 개수 - 쿠폰 적용 수량 
+							mdao.plusStamp(mdto.getTel(), cnt - couponCnt); // 총 개수 - 쿠폰 적용 수량
 						}
 					} else { // 쿠폰 사용 안할 시 총 수량만큼 스탬프 적립
 						int cnt = 0;
@@ -1066,6 +1065,10 @@ public class Main {
 		buttonCredit.setBounds(190, 0, 196, 60);
 		panel_6.add(buttonCredit);
 
+		JPanel panel_9 = new JPanel();
+		panel_9.setBounds(398, 57, 32, 49);
+		panel_6.add(panel_9);
+
 		Timer timer = new Timer(); // 실시간 시계 설정
 		timer.schedule(new MakeTime(), 0, 1000);
 		// 호출 객체, 지연시간, 호출간격
@@ -1095,22 +1098,55 @@ public class Main {
 		labelShowEvent.setFont(new Font("굴림", Font.BOLD, 15));
 		labelShowEvent.setBounds(756, 28, 273, 18);
 		f1.getContentPane().add(labelShowEvent);
-		
+
 		ldto = ldao.info();
-		
-		JLabel labelLogin = new JLabel("Login: " + ldto.getId());
+
+		JLabel labelLogin = new JLabel("User : " + ldto.getId());
 		labelLogin.setFont(new Font("굴림", Font.PLAIN, 16));
 		labelLogin.setBounds(642, 28, 130, 27);
 		f1.getContentPane().add(labelLogin);
 
+		labelNotice = new JLabel("asdf");
+		labelNotice.setForeground(Color.GRAY);
+		labelNotice.setBounds(1043, 735, 680, 18);
+		f1.getContentPane().add(labelNotice);
+		String notice = "              한   시간   단위로   재고량   확인 ,     매장   청소   필수   !";
+		MovingText tt = new MovingText(notice);
+		tt.start();	// Thread 실행
+
 		f1.setVisible(true);
+	}
+
+	public class MovingText extends Thread { // Thread를 사용해 움직이는 문장 만듦
+		int x, y;
+		String text;
+		public MovingText(String text) {
+			this.text = text;
+		}
+
+		@Override
+		public void run() {
+			while (true) {	// 문장이 다 지나가면 오른쪽 맨끝에서 다시 시작
+				int i;
+				x=1040;
+				for (i = 1400; i >= 0; i--) { // i 가 0이 될때까지 왼쪽으로 이동 (대충 프레임을 다 지나갈때까지로 타이밍 맞춤)
+					labelNotice.setText(text);
+					x -= 1;
+					labelNotice.setBounds(x, 735, 665, 18);
+					try {
+						Thread.sleep(30);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
 	}
 
 	class MakeTime extends TimerTask { // 실시간 시계를 정의하는 클래스
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			Calendar date = Calendar.getInstance();
 			SimpleDateFormat sdf1_1 = new SimpleDateFormat("yyyy년 M월 d일 E요일");
 			SimpleDateFormat sdf1_2 = new SimpleDateFormat("yyyy년 M월 dd일 E요일");

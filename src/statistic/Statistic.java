@@ -2,6 +2,8 @@ package statistic;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -22,6 +24,7 @@ public class Statistic {
 	static DefaultTableModel tmodel1;
 	static DefaultTableModel tmodel2;
 	static DefaultTableModel tmodel3;
+	JButton buttonSearch3;
 	StatDto dto;
 	StatDto dto1;
 	StatDto dto2;
@@ -165,8 +168,15 @@ public class Statistic {
 		t1.setBounds(130, 42, 196, 27);
 		f.getContentPane().add(t1);
 		t1.setColumns(10);
+		t1.addKeyListener(new KeyAdapter() {	// 엔터 입력시 확인 버튼 누르도록 설정
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER)
+					buttonSearch3.doClick();
+			}
+		});
 
-		JButton buttonSearch3 = new JButton("검색");//통계 검색 버튼
+		buttonSearch3 = new JButton("검색");//통계 검색 버튼
 		buttonSearch3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String selected = comboBoxSearch.getSelectedItem().toString();
