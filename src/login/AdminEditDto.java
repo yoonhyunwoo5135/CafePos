@@ -1,15 +1,15 @@
 package login;
 
 public class AdminEditDto {
-
+	
 	private String id;
 	private String pw;
 	private String name;
 	private int age;
 	private String tel;
-
+	
 	public AdminEditDto() {
-
+		
 	}
 
 	public String getId() {
@@ -59,5 +59,7 @@ public class AdminEditDto {
 		this.age = age;
 		this.tel = tel;
 	}
-
+	
+	
+	
 }

@@ -109,7 +109,7 @@ public class AdminEdit {
 				} else if (tName.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "이름을 입력해주세요!");
 					return;
-				} else if (tAge.getText() == null) {
+				} else if (tAge.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "나이를 입력해주세요!");
 					return;
 				} else if (tTel.getText().equals("")) {
@@ -132,6 +132,9 @@ public class AdminEdit {
 						return;
 					} else if (confirm == 1) {
 						return;
+					}
+					else if (confirm == 2) {
+					return;
 					}
 				}
 				dao = new AdminEditDao();
