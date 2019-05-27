@@ -130,11 +130,12 @@ public class AdminEdit {
 						JOptionPane.showMessageDialog(null, "회원 정보 변경 완료!");
 						f.setVisible(false);
 						return;
-					} else if (confirm == 1) {
+					}
+					else if (confirm == 1) {
 						return;
 					}
 					else if (confirm == 2) {
-					return;
+						return;
 					}
 				}
 				dao = new AdminEditDao();
